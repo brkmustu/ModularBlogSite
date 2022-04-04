@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<RootNamespace>UserPortalModule</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CoreModule\CoreModule.Domain\CoreModule.Domain.csproj" />
+    <ProjectReference Include="..\UserPortalModule.Domain.Shared\UserPortalModule.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
+

@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  managementmodule.webapi:
+    image: ${DOCKER_REGISTRY-}managementmodulewebapi
+    build:
+      context: .
+      dockerfile: src/ManagementModule/ManagementModule.WebApi/Dockerfile
+
+  userportalmodule.webapi:
+    image: ${DOCKER_REGISTRY-}userportalmodulewebapi
+    build:
+      context: .
+      dockerfile: src/UserPortalModule/UserPortalModule.WebApi/Dockerfile
+

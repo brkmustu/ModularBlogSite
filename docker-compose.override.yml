@@ -1,0 +1,105 @@
+version: '3.4'
+
+services:
+  managementmodule.webapi:
+    environment:
+      ConnectionStrings_ManagementModule: host=managementmodule_db;Port=54321;Database=ManagementServiceDb;User Id=postgres;Password=my_password;CommandTimeout=300;
+      ASPNETCORE_ENVIRONMENT: Development
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: ManagementServiceLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    ports:
+      - "80"
+    depends_on:
+      - "mongo"
+      - "managementmodule_db"
+    networks:
+      - "modular-blog-network"
+
+  userportalmodule.webapi:
+    environment:
+      ConnectionStrings_UserPortalModule: host=userportalmodule_db;Port=54323;Database=UserPortalServiceDb;User Id=postgres;Password=my_password;CommandTimeout=300;
+      ASPNETCORE_ENVIRONMENT: Development
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: UserPortalServiceLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    ports:
+      - "80"
+    depends_on:
+      - "mongo"
+      - "userportalmodule_db"
+    networks:
+      - "modular-blog-network"
+
+  managementmodule_db:
+    image: docker.io/bitnami/postgresql:14
+    ports:
+      - '54321'
+    volumes:
+      - 'modular_blog_volume:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=my_password
+      - POSTGRESQL_DATABASE=my_database
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - modular-blog-network
+
+  userportalmodule_db:
+    image: docker.io/bitnami/postgresql:14
+    ports:
+      - '54323'
+    volumes:
+      - 'modular_blog_volume:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=my_password
+      - POSTGRESQL_DATABASE=my_database
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - modular-blog-network
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - modular-blog-network
+
+  mongoexpress:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
+    networks:
+      - modular-blog-network
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - 'pgadmin:/var/lib/pgadmin'
+    ports:
+      - '${PGADMIN_PORT:-5050}:80'
+    restart: unless-stopped
+    networks:
+      - modular-blog-network
+
+volumes:
+  modular_blog_volume:
+  pgadmin:
+
+networks:
+  modular-blog-network:
+    driver: bridge

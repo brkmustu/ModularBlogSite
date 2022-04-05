@@ -18,7 +18,7 @@ public class UserRegistrationCommandTests : TestBase
         var fixture = new Fixture()
             .Customize(new AutoMoqCustomization());
 
-        var command = fixture.Create<UserRegistrationCommand>();
+        var command = fixture.Create<UserRegistrationAnonymousCommand>();
 
         var users = fixture.CreateMany<User>(5);
 
@@ -30,7 +30,7 @@ public class UserRegistrationCommandTests : TestBase
 
         mockDbContext.Setup(x => x.Users).Returns(mockUserDbSet.Object);
 
-        var handler = new UserRegistrationCommand.Handler(mockDbContext.Object, Mapper);
+        var handler = new UserRegistrationAnonymousCommand.Handler(mockDbContext.Object, Mapper);
 
         var result = await handler.Handle(command);
 

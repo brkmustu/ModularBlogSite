@@ -23,9 +23,10 @@ public class AuditingCommandHandlerDecorator<TCommand> : ICommandHandler<TComman
     {
         Result result;
         var auditLog = new AuditLogInfo();
-        auditLog.ApplicationName = nameof(TCommand);
+        auditLog.ApplicationName = typeof(TCommand).Name;
         auditLog.CorrelationId = Guid.NewGuid().ToString();
-        auditLog.Request = JsonSerializer.Serialize(command);
+        //auditLog.Request = JsonSerializer.Serialize(command, new JsonSerializerOptions { WriteIndented = false });
+        auditLog.ExecutionTime = DateTime.Now;
         if (_currentUserService.IsAuthenticated)
             auditLog.UserId = _currentUserService.UserId;
 
@@ -48,7 +49,18 @@ public class AuditingCommandHandlerDecorator<TCommand> : ICommandHandler<TComman
             stopwatch.Stop();
             auditLog.ExecutionDuration = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
             if (auditLog.Exceptions.Any())
-                _logger.LogError(auditLog.Exceptions.FirstOrDefault(), JsonSerializer.Serialize(auditLog));
+            {
+                try
+                {
+                    var serializedLog = JsonSerializer.Serialize(auditLog);
+                    _logger.LogError(auditLog.Exceptions.FirstOrDefault(), serializedLog);
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+            }
             else
                 _logger.LogInformation(JsonSerializer.Serialize(auditLog));
         }

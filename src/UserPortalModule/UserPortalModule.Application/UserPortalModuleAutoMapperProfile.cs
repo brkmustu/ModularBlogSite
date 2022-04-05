@@ -9,8 +9,8 @@ namespace UserPortalModule
     {
         public UserPortalModuleAutoMapperProfile()
         {
-            CreateMap<UserRegistrationCommand, User>();
-            CreateMap<User, UserRegistrationCommand>();
+            CreateMap<UserRegistrationAnonymousCommand, User>();
+            CreateMap<User, UserRegistrationAnonymousCommand>();
 
             CreateMap<UserDto, User>();
             CreateMap<User, UserDto>();

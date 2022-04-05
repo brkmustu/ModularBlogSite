@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UserPortalModule.CommandHandlers;
 
-public class UserRegistrationCommand : ICommand
+public class UserRegistrationAnonymousCommand : ICommand
 {
     [Required(AllowEmptyStrings = false)]
     [StringLength(70)]
@@ -36,13 +36,13 @@ public class UserRegistrationCommand : ICommand
 
     public long[] RoleIds { get; set; }
 
-    public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserRegistrationCommand>
+    public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserRegistrationAnonymousCommand>
     {
         public Handler(IUserPortalModuleDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
-        public async Task<Result> Handle(UserRegistrationCommand command)
+        public async Task<Result> Handle(UserRegistrationAnonymousCommand command)
         {
             var user = _mapper.Map<User>(command);
 

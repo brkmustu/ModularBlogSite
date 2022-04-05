@@ -26,7 +26,8 @@ public class AuditingQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQue
         var auditLog = new AuditLogInfo();
         auditLog.ApplicationName = nameof(TQuery);
         auditLog.CorrelationId = Guid.NewGuid().ToString();
-        auditLog.Request = JsonSerializer.Serialize(query);
+        //auditLog.Request = JsonSerializer.Serialize(query, new JsonSerializerOptions { WriteIndented = false });
+        auditLog.ExecutionTime = DateTime.Now;
         if (_currentUserService.IsAuthenticated)
             auditLog.UserId = _currentUserService.UserId;
 

@@ -3,7 +3,7 @@ version: '3.4'
 services:
   managementmodule.webapi:
     environment:
-      ConnectionStrings_ManagementModule: host=managementmodule_db;Port=54321;Database=ManagementServiceDb;User Id=postgres;Password=my_password;CommandTimeout=300;
+      ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=my_password;CommandTimeout=300;
       ASPNETCORE_ENVIRONMENT: Development
       Serilog__WriteTo__Name: MongoDBBson
       Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
@@ -14,13 +14,13 @@ services:
       - "80"
     depends_on:
       - "mongo"
-      - "managementmodule_db"
+      - "postgresql-master"
     networks:
       - "modular-blog-network"
 
   userportalmodule.webapi:
     environment:
-      ConnectionStrings_UserPortalModule: host=userportalmodule_db;Port=54323;Database=UserPortalServiceDb;User Id=postgres;Password=my_password;CommandTimeout=300;
+      ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalModuleDb;User Id=postgres;Password=my_password;CommandTimeout=300;
       ASPNETCORE_ENVIRONMENT: Development
       Serilog__WriteTo__Name: MongoDBBson
       Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
@@ -31,34 +31,41 @@ services:
       - "80"
     depends_on:
       - "mongo"
-      - "userportalmodule_db"
+      - "postgresql-master"
+      - "managementmodule.webapi"
     networks:
       - "modular-blog-network"
 
-  managementmodule_db:
+  postgresql-master:
     image: docker.io/bitnami/postgresql:14
     ports:
-      - '54321'
+      - '5432'
     volumes:
-      - 'modular_blog_volume:/bitnami/postgresql'
+      - 'db_volume:/bitnami/postgresql'
     environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
       - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_PASSWORD=my_password
-      - POSTGRESQL_DATABASE=my_database
+      - POSTGRESQL_DATABASE=ManagementModuleDb
       - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - modular-blog-network
 
-  userportalmodule_db:
+  postgresql-slave:
     image: docker.io/bitnami/postgresql:14
     ports:
-      - '54323'
-    volumes:
-      - 'modular_blog_volume:/bitnami/postgresql'
+      - '5432'
+    depends_on:
+      - postgresql-master
     environment:
-      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_HOST=postgresql-master
       - POSTGRESQL_PASSWORD=my_password
-      - POSTGRESQL_DATABASE=my_database
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
       - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - modular-blog-network
@@ -97,7 +104,7 @@ services:
       - modular-blog-network
 
 volumes:
-  modular_blog_volume:
+  db_volume:
   pgadmin:
 
 networks:

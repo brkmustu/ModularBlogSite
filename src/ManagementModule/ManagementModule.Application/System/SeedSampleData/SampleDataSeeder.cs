@@ -28,6 +28,8 @@ namespace ManagementModule.System.SeedSampleData
 
                 var adminRoleId = await rolesSeeder.SyncAdminRole(permissionIds);
 
+                await rolesSeeder.SyncPortalRole();
+
                 await new SeedUsers(_dbContext).SyncAdminUser(adminRoleId);
             }
         }

@@ -62,6 +62,7 @@ public class UserRegistrationAnonymousCommand : ICommand
             await _publishEndpoint.Publish<UserRegisteredEvent>(new
             {
                 User = user,
+                Password = command.Password,
             });
 
             return Result.Success();

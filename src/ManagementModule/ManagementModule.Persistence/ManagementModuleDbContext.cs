@@ -43,17 +43,23 @@ public class ManagementModuleDbContext : DbContext, IManagementModuleDbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    if (_currentUserService is not null)
-                        entry.Entity.CreatedBy = _currentUserService.UserId.HasValue ? _currentUserService.UserId.Value : Guid.Empty;
-                    else
-                        entry.Entity.CreatedBy = SystemOptions.SystemGuid;
+                    if (entry.Entity.CreatedBy == Guid.Empty)
+                    {
+                        if (_currentUserService is not null)
+                            entry.Entity.CreatedBy = _currentUserService.UserId.HasValue ? _currentUserService.UserId.Value : SystemOptions.SystemGuid;
+                        else
+                            entry.Entity.CreatedBy = SystemOptions.SystemGuid;
+                    }
                     entry.Entity.CreatedDate = _dateTime.Now;
                     break;
                 case EntityState.Modified:
-                    if (_currentUserService is not null)
-                        entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                    else
-                        entry.Entity.LastModifiedBy = SystemOptions.SystemGuid;
+                    if (!entry.Entity.LastModifiedBy.HasValue || entry.Entity.LastModifiedBy.Value == Guid.Empty)
+                    {
+                        if (_currentUserService is not null && _currentUserService.UserId.HasValue)
+                            entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                        else
+                            entry.Entity.LastModifiedBy = SystemOptions.SystemGuid;
+                    }
                     entry.Entity.LastModifiedDate = _dateTime.Now;
                     break;
             }

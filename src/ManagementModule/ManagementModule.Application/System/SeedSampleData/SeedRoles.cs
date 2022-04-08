@@ -65,7 +65,11 @@ public class SeedRoles
 
         if (portalRole is null)
         {
-            _context.Roles.Add(new Role { Name = PermissionNames.Portal, Description = "Portal kullanıcıları için oluşturulan rol tanımıdır. Management sisteminde herhangi bir yetkisi varsayılan olarak olmayacaktır." });
+            _context.Roles.Add(new Role { 
+                Name = PermissionNames.Portal, 
+                Description = "Portal kullanıcıları için oluşturulan rol tanımıdır. Management sisteminde herhangi bir yetkisi varsayılan olarak olmayacaktır.",
+                PermissionIds = new long[] { }
+            });
 
             await _context.SaveChangesAsync(cancellationToken: CancellationToken.None);
         }

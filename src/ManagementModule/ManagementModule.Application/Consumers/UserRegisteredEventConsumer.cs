@@ -1,4 +1,6 @@
 ﻿using CoreModule.Application.Common.MessageContracts;
+using CoreModule.Application.Extensions.Hashing;
+using CoreModule.Domain.Permissions;
 using ManagementModule.Common;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -18,8 +20,18 @@ public class UserRegisteredEventConsumer : IConsumer<UserRegisteredEvent>
     {
         var portalUser = context.Message.User;
 
+        var encryptedPassword = context.Message.Password.CreatePasswordHash();
+
         /// portal kullanıcısının management modülünde herhangi bir yetkisi varsayılan olarak olmayacağı için rolleri siliyoruz.
-        portalUser.SetRoles(new long[] { });
+
+        portalUser.SetPasswordHash(encryptedPassword.PasswordHash);
+        portalUser.SetPasswordSalt(encryptedPassword.PasswordSalt);
+
+        var portalRole = _dbContext.Roles.Where(x => x.Name == PermissionNames.Portal).FirstOrDefault();
+        if (portalRole is not null)
+            portalUser.SetRoles(new long[] { portalRole.Id });
+        else
+            portalUser.SetRoles(new long[] { });
 
         _dbContext.Users.Add(portalUser);
 

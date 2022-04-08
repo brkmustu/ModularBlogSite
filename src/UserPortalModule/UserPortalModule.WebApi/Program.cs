@@ -4,8 +4,6 @@ using UserPortalModule.System.SeedSampleData;
 using CoreModule.Web.Swagger;
 using Microsoft.OpenApi.Models;
 using CoreModule.Web.Codes;
-using UserPortalModule.Infrastructure;
-using UserPortalModule.System.Permissions;
 using SimpleInjector;
 using Serilog;
 
@@ -29,8 +27,7 @@ services.AddSwaggerGen(options =>
     options.IncludeMessageSummariesFromXmlDocs(AppDomain.CurrentDomain.BaseDirectory);
 });
 
-services.AddApplication()
-    .AddInfrastructure()
+services.AddApplication(builder.Configuration)
     .AddPersistence(builder.Configuration)
     .AddWebApi(builder.Configuration);
 
@@ -41,7 +38,7 @@ services.AddSimpleInjector(container, options =>
     options.AddAspNetCore();
 });
 
-Bootstrapper.Bootstrap(container);
+Bootstrapper.Bootstrap(container, builder.Configuration);
 
 var app = builder.Build();
 
@@ -62,8 +59,6 @@ using (var scope = app.Services.CreateScope())
 
         var sampleDataSeeder = scopedServices.GetRequiredService<SampleDataSeeder>();
         await sampleDataSeeder.SeedAllAsync(CancellationToken.None);
-
-        await new SyncPermissions().SyncAllAsync(baseModuleContext);
     }
     catch (Exception ex)
     {
@@ -80,4 +75,3 @@ app.MapQueries(
     queryTypes: Bootstrapper.GetKnownQueryTypes());
 
 app.Run();
-

@@ -1,7 +1,8 @@
-﻿using ManagementModule.System;
-using CoreModule.Web;
+﻿using CoreModule.Web;
 using Serilog;
 using SimpleInjector;
+using MassTransit;
+using CoreModule.Application.Common.RabbitMqExtensions;
 
 namespace ManagementModule
 {
@@ -12,23 +13,36 @@ namespace ManagementModule
         public static IEnumerable<(Type QueryType, Type ResultType)> GetKnownQueryTypes() =>
             ApplicationLayerBootstrapper.GetQueryTypes();
 
-        public static void Bootstrap(Container container)
+        public static void Bootstrap(Container container, IConfiguration configuration)
         {
-            container.AddApplication();
-        }
+            var appSettingsSection = configuration.GetSection(RabbitMqOptions.SectionName);
+            var options = appSettingsSection.Get<RabbitMqOptions>();
 
+            container.AddApplication();
+
+            container.RegisterSingleton<IPublishEndpoint>(() => Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.Host(options.HostName, options.VirtualHost, hst =>
+                {
+                    hst.Username(options.UserName);
+                    hst.Password(options.Password);
+                });
+            }));
+        }
         public static IServiceCollection AddWebApi(this IServiceCollection services, IConfiguration configuration)
         {
             /// web api layer registrations
             /// 
 
-            services.AddWebCore();
+            services.AddWebCore(configuration);
+
+            services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
 
             services.AddHttpContextAccessor();
 
-            services.Configure<SystemOptions>(configuration.GetSection(SystemOptions.Name));
-
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
+
+            services.RegisterQueueServices(configuration);
 
             return services;
         }

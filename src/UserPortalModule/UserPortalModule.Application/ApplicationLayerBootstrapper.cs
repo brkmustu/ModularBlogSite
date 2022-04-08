@@ -7,6 +7,8 @@ using CoreModule.Application.Auditing;
 using CoreModule.Application.Validation;
 using SimpleInjector;
 using CoreModule.Application.Authorization;
+using CoreModule.Application;
+using Microsoft.Extensions.Configuration;
 
 namespace UserPortalModule
 {
@@ -36,10 +38,12 @@ namespace UserPortalModule
             return container;
         }
 
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             /// application layer registrations
             /// 
+
+            services.AddCoreApp(configuration);
 
             services.AddAutoMapper(typeof(UserPortalModuleApplicationService).Assembly);
 

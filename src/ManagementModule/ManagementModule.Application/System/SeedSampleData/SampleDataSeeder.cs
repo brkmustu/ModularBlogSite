@@ -1,20 +1,17 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using ManagementModule.Common;
-using CoreModule.Domain.Users;
+using CoreModule.Application;
 
 namespace ManagementModule.System.SeedSampleData
 {
     public class SampleDataSeeder
     {
-        private readonly IManagementModuleDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IManagementModuleDbContext _dbContext;
         private readonly SystemOptions _options;
 
-        public SampleDataSeeder(IManagementModuleDbContext context, IMapper mapper, IOptions<SystemOptions> options)
+        public SampleDataSeeder(IManagementModuleDbContext dbContext, IOptions<SystemOptions> options)
         {
-            _context = context;
-            _mapper = mapper;
+            _dbContext = dbContext;
             _options = options.Value;
         }
 
@@ -25,17 +22,13 @@ namespace ManagementModule.System.SeedSampleData
                 /// seed sample datas
                 /// 
 
-                var adminUser = _context.Users.Where(x => x.UserName == "admin").FirstOrDefault();
+                var permissionIds = await new SeedPermissions(_dbContext).SyncAllAsync();
 
-                if (adminUser != null) return;
+                var rolesSeeder = new SeedRoles(_dbContext);
 
-                User admin = new User("admin", "admin", "admin", new long[] { 1, 2, 3, 4, 5 });
+                var adminRoleId = await rolesSeeder.SyncAdminRole(permissionIds);
 
-                admin.Id = Guid.NewGuid();
-
-                _context.Users.Add(admin);
-
-                await _context.SaveChangesAsync(cancellationToken: CancellationToken.None);
+                await new SeedUsers(_dbContext).SyncAdminUser(adminRoleId);
             }
         }
     }

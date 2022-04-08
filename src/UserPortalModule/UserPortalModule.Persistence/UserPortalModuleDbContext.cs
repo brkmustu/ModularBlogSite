@@ -5,7 +5,8 @@ using CoreModule.Domain.Permissions;
 using CoreModule.Domain.Roles;
 using CoreModule.Domain.Users;
 using CoreModule.Application.Common.Interfaces;
-using CoreModule.Common;
+using CoreModule.Application;
+using CoreModule.Application.Common;
 
 namespace UserPortalModule;
 
@@ -14,8 +15,11 @@ public class UserPortalModuleDbContext : DbContext, IUserPortalModuleDbContext
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    public UserPortalModuleDbContext(DbContextOptions<UserPortalModuleDbContext> options) : base(options)
+    public UserPortalModuleDbContext(DbContextOptions<UserPortalModuleDbContext> options)
+        : base(options)
     {
+        _currentUserService = new NullCurrentUserService();
+        _dateTime = new MachineDateTime();
     }
 
     public UserPortalModuleDbContext(
@@ -39,11 +43,17 @@ public class UserPortalModuleDbContext : DbContext, IUserPortalModuleDbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.CreatedBy = _currentUserService.UserId.HasValue ? _currentUserService.UserId.Value : Guid.Empty;
+                    if (_currentUserService is not null)
+                        entry.Entity.CreatedBy = _currentUserService.UserId.HasValue ? _currentUserService.UserId.Value : Guid.Empty;
+                    else
+                        entry.Entity.CreatedBy = SystemOptions.SystemGuid;
                     entry.Entity.CreatedDate = _dateTime.Now;
                     break;
                 case EntityState.Modified:
-                    entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                    if (_currentUserService is not null)
+                        entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                    else
+                        entry.Entity.LastModifiedBy = SystemOptions.SystemGuid;
                     entry.Entity.LastModifiedDate = _dateTime.Now;
                     break;
             }

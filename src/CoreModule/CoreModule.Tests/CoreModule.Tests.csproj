@@ -20,8 +20,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CoreModule\CoreModule.csproj" />
-  </ItemGroup>
-
 </Project>

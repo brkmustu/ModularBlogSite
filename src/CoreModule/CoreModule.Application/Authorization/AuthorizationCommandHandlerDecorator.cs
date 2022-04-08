@@ -24,7 +24,7 @@ public class AuthorizationCommandHandlerDecorator<TCommand> : ICommandHandler<TC
 
     private void Authorize()
     {
-        if (!nameof(TCommand).EndsWith(AuthorizationConsts.AnonymousCommandEndsWith) && !this.currentUser.IsInRole(nameof(TCommand)))
+        if (!typeof(TCommand).Name.EndsWith(AuthorizationConsts.AnonymousCommandEndsWith) && !this.currentUser.IsInRole(nameof(TCommand)))
         {
             throw new SecurityException();
         }

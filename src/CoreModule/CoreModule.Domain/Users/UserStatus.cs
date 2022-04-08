@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CoreModule.Domain.Users;
+﻿namespace CoreModule.Domain.Users;
 
 public class UserStatus : ActivetableEntity, IEntity<int>
 {
-    [Key]
     public int Id { get; set; }
     public string Value { get; private set; }
     public UserStatus(string value)

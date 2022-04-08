@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CoreModule.Domain.Roles;
+﻿namespace CoreModule.Domain.Roles;
 
 public class Role : ActivetableEntity, IEntity<long>
 {
@@ -8,4 +6,8 @@ public class Role : ActivetableEntity, IEntity<long>
     public string Name { get; set; }
     public string Description { get; set; }
     public long[] PermissionIds { get; set; }
+    public Role()
+    {
+        this.IsActive = true;
+    }
 }

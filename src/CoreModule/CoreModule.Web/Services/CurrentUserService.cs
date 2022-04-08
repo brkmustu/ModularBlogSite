@@ -10,13 +10,10 @@ public class CurrentUserService : ICurrentUserService
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)
     {
         this.httpContextAccessor = httpContextAccessor;
-        var userId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-        IsAuthenticated = userId != null && !userId.IsNullOrEmpty();
-        if (IsAuthenticated)
-            UserId = new Guid(userId);
     }
-    public Guid? UserId { get; }
-    public bool IsAuthenticated { get; }
+    private string userId => this.httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+    public Guid? UserId => IsAuthenticated ? new Guid(userId) : (Guid?)null;
+    public bool IsAuthenticated => !userId.IsNullOrEmpty();
     public IIdentity Identity => this.Principal.Identity!;
     public bool IsInRole(string role) => this.Principal.IsInRole(role);
     private IPrincipal Principal => this.httpContextAccessor.HttpContext?.User!;

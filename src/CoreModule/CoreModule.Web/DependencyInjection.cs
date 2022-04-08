@@ -1,17 +1,20 @@
-﻿using CoreModule.Application.Common.Interfaces;
+﻿using CoreModule.Application;
+using CoreModule.Application.Common.Interfaces;
 using CoreModule.Web.Services;
 
 namespace CoreModule.Web;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebCore(this IServiceCollection container)
+    public static IServiceCollection AddWebCore(this IServiceCollection services, IConfiguration configuration)
     {
-        /// application layer registrations
+        /// Web Core layer registrations
         /// 
 
-        container.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddCoreApp(configuration);
 
-        return container;
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+        return services;
     }
 }

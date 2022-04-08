@@ -25,7 +25,7 @@ public class AuthorizationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler
 
     private void Authorize()
     {
-        if (!nameof(TQuery).EndsWith(AuthorizationConsts.AnonymousQueryEndsWith) && !this.currentUser.IsInRole(nameof(TQuery)))
+        if (!typeof(TQuery).Name.EndsWith(AuthorizationConsts.AnonymousQueryEndsWith) && !this.currentUser.IsInRole(nameof(TQuery)))
         {
             throw new SecurityException();
         }

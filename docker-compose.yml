@@ -6,10 +6,115 @@ services:
     build:
       context: .
       dockerfile: src/ManagementModule/ManagementModule.WebApi/Dockerfile
+    environment:
+      ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=my_password;CommandTimeout=300;
+      ASPNETCORE_ENVIRONMENT: Development
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: ManagementServiceLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    ports:
+      - "9090:80"
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+    networks:
+      - "modular-blog-network"
 
   userportalmodule.webapi:
     image: ${DOCKER_REGISTRY-}userportalmodulewebapi
     build:
       context: .
       dockerfile: src/UserPortalModule/UserPortalModule.WebApi/Dockerfile
+    environment:
+      ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalModuleDb;User Id=postgres;Password=my_password;CommandTimeout=300;
+      ASPNETCORE_ENVIRONMENT: Development
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: UserPortalServiceLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    ports:
+      - "9090:80"
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+      - "managementmodule.webapi"
+    networks:
+      - "modular-blog-network"
 
+  postgresql-master:
+    image: docker.io/bitnami/postgresql:14
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'db_volume:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=my_password
+      - POSTGRESQL_DATABASE=ManagementModuleDb
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - modular-blog-network
+
+  postgresql-slave:
+    image: docker.io/bitnami/postgresql:14
+    ports:
+      - '5432'
+    depends_on:
+      - postgresql-master
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_HOST=postgresql-master
+      - POSTGRESQL_PASSWORD=my_password
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - modular-blog-network
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - modular-blog-network
+
+  mongoexpress:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
+    networks:
+      - modular-blog-network
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - 'pgadmin:/var/lib/pgadmin'
+    ports:
+      - '${PGADMIN_PORT:-5050}:80'
+    restart: unless-stopped
+    networks:
+      - modular-blog-network
+
+volumes:
+  db_volume:
+  pgadmin:
+
+networks:
+  modular-blog-network:
+    driver: bridge

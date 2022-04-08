@@ -15,13 +15,17 @@ public class User : AuditableEntity
 
     internal User() { }
 
-    public User(string userName, string firstName, string lastName, long[] roleIds = default)
+    public User(string userName, string firstName, string lastName)
     {
         UserName = userName;
         FirstName = firstName;
         LastName = lastName;
         IsActive = false;
         UserStatusId = (int)UserStatusType.WaitingForApproval;
+    }
+
+    public void SetRoles(long[] roleIds)
+    {
         RoleIds = roleIds;
     }
 

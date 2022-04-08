@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using CoreModule.Application;
 using Microsoft.Extensions.Options;
 using UserPortalModule.Common;
 
@@ -6,15 +6,12 @@ namespace UserPortalModule.System.SeedSampleData
 {
     public class SampleDataSeeder
     {
-        private const string UserId = "84054f6f-384c-4f8e-899a-f8872bd3d207";
-        private readonly IUserPortalModuleDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IUserPortalModuleDbContext _dbContext;
         private readonly SystemOptions _options;
 
-        public SampleDataSeeder(IUserPortalModuleDbContext context, IMapper mapper, IOptions<SystemOptions> options)
+        public SampleDataSeeder(IUserPortalModuleDbContext dbContext, IOptions<SystemOptions> options)
         {
-            _context = context;
-            _mapper = mapper;
+            _dbContext = dbContext;
             _options = options.Value;
         }
 
@@ -25,6 +22,11 @@ namespace UserPortalModule.System.SeedSampleData
                 /// seed sample datas
                 /// 
 
+                var permissionIds = await new SeedPermissions(_dbContext).SyncAllAsync();
+
+                var adminRoleId = await new SeedRoles(_dbContext).SyncAdminRole(permissionIds);
+
+                await new SeedUsers(_dbContext).SyncAdminUser(adminRoleId);
             }
         }
     }

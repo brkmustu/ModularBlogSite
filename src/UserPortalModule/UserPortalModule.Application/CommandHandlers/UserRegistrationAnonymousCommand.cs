@@ -5,6 +5,8 @@ using CoreModule.Application.Common.Interfaces;
 using CoreModule.Application.Extensions.Hashing;
 using CoreModule.Domain.Users;
 using System.ComponentModel.DataAnnotations;
+using CoreModule.Application.Common.MessageContracts;
+using MassTransit;
 
 namespace UserPortalModule.CommandHandlers;
 
@@ -30,7 +32,6 @@ public class UserRegistrationAnonymousCommand : ICommand
     [StringLength(20)]
     public string MobileNumber { get; set; }
 
-    [Required(AllowEmptyStrings = false)]
     [StringLength(70)]
     public string EmailAddress { get; set; }
 
@@ -38,7 +39,11 @@ public class UserRegistrationAnonymousCommand : ICommand
 
     public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserRegistrationAnonymousCommand>
     {
-        public Handler(IUserPortalModuleDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public Handler(
+                IUserPortalModuleDbContext dbContext, 
+                IMapper mapper, 
+                IPublishEndpoint publishEndpoint
+            ) : base(dbContext, mapper, publishEndpoint)
         {
         }
 
@@ -53,6 +58,12 @@ public class UserRegistrationAnonymousCommand : ICommand
 
             _dbContext.Users.Add(user);
             await _dbContext.SaveChangesAsync(cancellationToken: CancellationToken.None);
+
+            await _publishEndpoint.Publish<UserRegisteredEvent>(new
+            {
+                User = user,
+            });
+
             return Result.Success();
         }
     }

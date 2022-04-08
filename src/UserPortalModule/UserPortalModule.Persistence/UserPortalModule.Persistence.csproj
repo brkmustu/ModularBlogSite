@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UserPortalModule.Application\UserPortalModule.Application.csproj" />
-    <ProjectReference Include="..\UserPortalModule.Infrastructure\UserPortalModule.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

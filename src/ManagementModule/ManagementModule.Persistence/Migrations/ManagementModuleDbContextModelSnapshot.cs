@@ -94,7 +94,7 @@ namespace ManagementModule.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -144,4 +144,3 @@ namespace ManagementModule.Migrations
         }
     }
 }
-

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ManagementModule.Migrations
 {
     [DbContext(typeof(ManagementModuleDbContext))]
-    [Migration("20220403232051_initial-migrations")]
-    partial class initialmigrations
+    [Migration("20220408162129_initial_migration")]
+    partial class initial_migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,7 +96,7 @@ namespace ManagementModule.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(false);
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -146,4 +146,3 @@ namespace ManagementModule.Migrations
         }
     }
 }
-

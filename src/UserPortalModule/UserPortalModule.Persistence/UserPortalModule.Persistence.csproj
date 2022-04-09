@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CoreModule\CoreModule.Persistence\CoreModule.Persistence.csproj" />
     <ProjectReference Include="..\UserPortalModule.Application\UserPortalModule.Application.csproj" />
   </ItemGroup>
 

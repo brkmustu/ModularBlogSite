@@ -1,0 +1,506 @@
+2022-04-08 18:36:58.623 +03:00 [WRN] The 'bool' property 'IsActive' on entity type 'User' is configured with a database-generated default. This default will always be used for inserts when the property has the value 'false', since this is the CLR default for the 'bool' type. Consider using the nullable 'bool?' type instead, so that the default will only be used for inserts when the property value is 'null'.
+2022-04-08 18:36:59.934 +03:00 [ERR] Failed executing DbCommand (65ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = Date), @p3='?', @p4='?', @p5='?' (DbType = Guid), @p6='?' (DbType = Date), @p7='?', @p8='?', @p9='?' (DbType = Binary), @p10='?' (DbType = Binary), @p11='?' (DbType = Object), @p12='?', @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='300']
+INSERT INTO "Users" ("Id", "CreatedBy", "CreatedDate", "EmailAddress", "FirstName", "LastModifiedBy", "LastModifiedDate", "LastName", "MobileNumber", "PasswordHash", "PasswordSalt", "RoleIds", "UserName", "UserStatusId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13)
+RETURNING "IsActive";
+2022-04-08 18:37:00.027 +03:00 [ERR] An exception occurred in the database while saving changes for context type 'UserPortalModule.UserPortalModuleDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-04-08 18:37:00.226 +03:00 [ERR] An error occurred while migrating or initializing the database.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at UserPortalModule.System.SeedSampleData.SeedUsers.SyncAdminUser(Int64 adminRoleId) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SeedUsers.cs:line 32
+   at UserPortalModule.System.SeedSampleData.SampleDataSeeder.SeedAllAsync(CancellationToken cancellationToken) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SampleDataSeeder.cs:line 29
+   at Program.<Main>$(String[] args) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.WebApi\Program.cs:line 61
+2022-04-08 18:37:00.441 +03:00 [INF] UserApprovedEventConsumer started
+2022-04-08 18:37:00.447 +03:00 [DBG] Subscribing Consumer: UserPortalModule.Consumers.UserApprovedEventConsumer (using supplied consumer factory)
+2022-04-08 18:37:00.478 +03:00 [DBG] Connect receive endpoint: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 18:37:00.572 +03:00 [ERR] UserApprovedEventConsumer error
+2022-04-08 18:37:00.576 +03:00 [DBG] Starting bus: "rabbitmq://localhost/mbs"
+2022-04-08 18:37:00.599 +03:00 [DBG] Starting bus instances: IBus
+2022-04-08 18:37:00.601 +03:00 [WRN] Start called, but the host was already started: "rabbitmq://localhost/mbs" (Already Started)
+2022-04-08 18:37:00.615 +03:00 [DBG] Connect: admin@localhost:5672/mbs
+2022-04-08 18:37:00.670 +03:00 [DBG] Connected: admin@localhost:5672/mbs (address: amqp://localhost:5672, local: 54249)
+2022-04-08 18:37:00.703 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/TCMXYZLMMBM_UserPortalModuleWebApi_bus_g1yoyygxwurfw8o1bdpb17c9ds?temporary=true"
+2022-04-08 18:37:00.714 +03:00 [DBG] Declare queue: name: mbs.userportal.service, durable, consumer-count: 1 message-count: 0
+2022-04-08 18:37:00.737 +03:00 [DBG] Declare exchange: name: mbs.userportal.service, type: fanout, durable
+2022-04-08 18:37:00.742 +03:00 [DBG] Bind queue: source: mbs.userportal.service, destination: mbs.userportal.service
+2022-04-08 18:37:00.805 +03:00 [DBG] Consumer Ok: "rabbitmq://localhost/mbs/mbs.userportal.service" - amq.ctag-9uEv-SQXJnMh_qeWAHss6w
+2022-04-08 18:37:00.808 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 18:37:00.812 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 18:37:00.812 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 18:37:00.813 +03:00 [INF] Bus listener started!
+2022-04-08 18:37:09.178 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"5e484b93-c790-4bb2-a1ef-04c55c0a52dc","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:37:08.9995827+03:00","ExecutionDuration":172,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022string\u0022,\u0022Password\u0022:\u0022string\u0022,\u0022FirstName\u0022:\u0022string\u0022,\u0022LastName\u0022:\u0022string\u0022,\u0022MobileNumber\u0022:\u0022string\u0022,\u0022EmailAddress\u0022:\u0022string\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 18:41:12.309 +03:00 [WRN] The 'bool' property 'IsActive' on entity type 'User' is configured with a database-generated default. This default will always be used for inserts when the property has the value 'false', since this is the CLR default for the 'bool' type. Consider using the nullable 'bool?' type instead, so that the default will only be used for inserts when the property value is 'null'.
+2022-04-08 18:41:13.531 +03:00 [ERR] Failed executing DbCommand (36ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = Date), @p3='?', @p4='?', @p5='?' (DbType = Guid), @p6='?' (DbType = Date), @p7='?', @p8='?', @p9='?' (DbType = Binary), @p10='?' (DbType = Binary), @p11='?' (DbType = Object), @p12='?', @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='300']
+INSERT INTO "Users" ("Id", "CreatedBy", "CreatedDate", "EmailAddress", "FirstName", "LastModifiedBy", "LastModifiedDate", "LastName", "MobileNumber", "PasswordHash", "PasswordSalt", "RoleIds", "UserName", "UserStatusId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13)
+RETURNING "IsActive";
+2022-04-08 18:41:13.581 +03:00 [ERR] An exception occurred in the database while saving changes for context type 'UserPortalModule.UserPortalModuleDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-04-08 18:41:13.760 +03:00 [ERR] An error occurred while migrating or initializing the database.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at UserPortalModule.System.SeedSampleData.SeedUsers.SyncAdminUser(Int64 adminRoleId) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SeedUsers.cs:line 32
+   at UserPortalModule.System.SeedSampleData.SampleDataSeeder.SeedAllAsync(CancellationToken cancellationToken) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SampleDataSeeder.cs:line 29
+   at Program.<Main>$(String[] args) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.WebApi\Program.cs:line 61
+2022-04-08 18:41:13.936 +03:00 [INF] UserApprovedEventConsumer started
+2022-04-08 18:41:13.941 +03:00 [DBG] Subscribing Consumer: UserPortalModule.Consumers.UserApprovedEventConsumer (using supplied consumer factory)
+2022-04-08 18:41:13.966 +03:00 [DBG] Connect receive endpoint: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 18:41:14.045 +03:00 [ERR] UserApprovedEventConsumer error
+2022-04-08 18:41:14.050 +03:00 [DBG] Starting bus: "rabbitmq://localhost/mbs"
+2022-04-08 18:41:14.069 +03:00 [DBG] Starting bus instances: IBus
+2022-04-08 18:41:14.070 +03:00 [WRN] Start called, but the host was already started: "rabbitmq://localhost/mbs" (Already Started)
+2022-04-08 18:41:14.082 +03:00 [DBG] Connect: admin@localhost:5672/mbs
+2022-04-08 18:41:14.124 +03:00 [DBG] Connected: admin@localhost:5672/mbs (address: amqp://localhost:5672, local: 50281)
+2022-04-08 18:41:14.155 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/TCMXYZLMMBM_UserPortalModuleWebApi_bus_hdzoyygxwurfw6bmbdpb17tsro?temporary=true"
+2022-04-08 18:41:14.167 +03:00 [DBG] Declare queue: name: mbs.userportal.service, durable, consumer-count: 1 message-count: 0
+2022-04-08 18:41:14.191 +03:00 [DBG] Declare exchange: name: mbs.userportal.service, type: fanout, durable
+2022-04-08 18:41:14.200 +03:00 [DBG] Bind queue: source: mbs.userportal.service, destination: mbs.userportal.service
+2022-04-08 18:41:14.243 +03:00 [DBG] Consumer Ok: "rabbitmq://localhost/mbs/mbs.userportal.service" - amq.ctag-D-c61L3htp8NmwgbchJ1YA
+2022-04-08 18:41:14.247 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 18:41:14.251 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 18:41:14.251 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 18:41:14.252 +03:00 [INF] Bus listener started!
+2022-04-08 18:41:22.395 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"7309373c-f520-4ff4-9da7-ea0348788489","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:41:22.2193203+03:00","ExecutionDuration":169,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022string\u0022,\u0022Password\u0022:\u0022string\u0022,\u0022FirstName\u0022:\u0022string\u0022,\u0022LastName\u0022:\u0022string\u0022,\u0022MobileNumber\u0022:\u0022string\u0022,\u0022EmailAddress\u0022:\u0022string\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 18:42:26.400 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"097c3023-6f54-4017-8c0b-6c7180b96458","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:42:26.3392659+03:00","ExecutionDuration":61,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022string\u0022,\u0022Password\u0022:\u0022string\u0022,\u0022FirstName\u0022:\u0022string\u0022,\u0022LastName\u0022:\u0022string\u0022,\u0022MobileNumber\u0022:\u0022string\u0022,\u0022EmailAddress\u0022:\u0022string\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 18:42:40.142 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"ba0ed5a2-997e-414a-9ba3-2f85f4734179","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:42:40.131376+03:00","ExecutionDuration":11,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022string\u0022,\u0022Password\u0022:\u0022string\u0022,\u0022FirstName\u0022:\u0022string\u0022,\u0022LastName\u0022:\u0022string\u0022,\u0022MobileNumber\u0022:\u0022string\u0022,\u0022EmailAddress\u0022:\u0022string\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 18:44:34.370 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"bc7a4749-67c8-4cfc-82a0-d0cf74772d90","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:44:20.1295291+03:00","ExecutionDuration":14241,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022string\u0022,\u0022Password\u0022:\u0022string\u0022,\u0022FirstName\u0022:\u0022string\u0022,\u0022LastName\u0022:\u0022string\u0022,\u0022MobileNumber\u0022:\u0022string\u0022,\u0022EmailAddress\u0022:\u0022string\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 18:44:59.031 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"ad11e2e2-0f7c-4ea1-840a-fad4d4353d81","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:44:54.7823602+03:00","ExecutionDuration":4249,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022deneme123\u0022,\u0022Password\u0022:\u0022deneme123\u0022,\u0022FirstName\u0022:\u0022deneme123\u0022,\u0022LastName\u0022:\u0022deneme123\u0022,\u0022MobileNumber\u0022:\u0022deneme123\u0022,\u0022EmailAddress\u0022:\u0022deneme123\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 18:45:38.013 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"c4f73f4f-638c-4a08-a917-694b6d3deaf3","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:45:38.0030161+03:00","ExecutionDuration":11,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022deneme123\u0022,\u0022Password\u0022:\u0022deneme123\u0022,\u0022FirstName\u0022:\u0022deneme123\u0022,\u0022LastName\u0022:\u0022deneme123\u0022,\u0022MobileNumber\u0022:\u0022deneme123\u0022,\u0022EmailAddress\u0022:\u0022deneme123\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 18:45:40.349 +03:00 [INF] {"ApplicationName":"UserRegistrationAnonymousCommand","CorrelationId":"5992aa55-cbcf-48ef-8edc-e534e8973423","UserId":null,"UserName":null,"ExecutionTime":"2022-04-08T18:45:40.3338578+03:00","ExecutionDuration":15,"ClientIpAddress":null,"Request":"{\u0022UserName\u0022:\u0022deneme123\u0022,\u0022Password\u0022:\u0022deneme123\u0022,\u0022FirstName\u0022:\u0022deneme123\u0022,\u0022LastName\u0022:\u0022deneme123\u0022,\u0022MobileNumber\u0022:\u0022deneme123\u0022,\u0022EmailAddress\u0022:\u0022deneme123\u0022,\u0022RoleIds\u0022:[0]}","Response":"{\u0022Succeeded\u0022:true,\u0022Message\u0022:null,\u0022Errors\u0022:null}","ExceptionTexts":[]}
+2022-04-08 19:23:27.499 +03:00 [ERR] Failed executing DbCommand (16ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = Date), @p3='?', @p4='?', @p5='?' (DbType = Guid), @p6='?' (DbType = Date), @p7='?', @p8='?', @p9='?' (DbType = Binary), @p10='?' (DbType = Binary), @p11='?' (DbType = Object), @p12='?', @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='300']
+INSERT INTO "Users" ("Id", "CreatedBy", "CreatedDate", "EmailAddress", "FirstName", "LastModifiedBy", "LastModifiedDate", "LastName", "MobileNumber", "PasswordHash", "PasswordSalt", "RoleIds", "UserName", "UserStatusId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13)
+RETURNING "IsActive";
+2022-04-08 19:23:27.755 +03:00 [ERR] An exception occurred in the database while saving changes for context type 'UserPortalModule.UserPortalModuleDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-04-08 19:23:28.502 +03:00 [ERR] An error occurred while migrating or initializing the database.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at UserPortalModule.System.SeedSampleData.SeedUsers.SyncAdminUser(Int64 adminRoleId) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SeedUsers.cs:line 32
+   at UserPortalModule.System.SeedSampleData.SampleDataSeeder.SeedAllAsync(CancellationToken cancellationToken) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SampleDataSeeder.cs:line 29
+   at Program.<Main>$(String[] args) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.WebApi\Program.cs:line 61
+2022-04-08 19:23:29.193 +03:00 [INF] UserApprovedEventConsumer started
+2022-04-08 19:23:29.209 +03:00 [DBG] Subscribing Consumer: UserPortalModule.Consumers.UserApprovedEventConsumer (using supplied consumer factory)
+2022-04-08 19:23:29.283 +03:00 [DBG] Connect receive endpoint: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 19:23:29.581 +03:00 [ERR] UserApprovedEventConsumer error
+2022-04-08 19:23:29.595 +03:00 [DBG] Starting bus: "rabbitmq://localhost/mbs"
+2022-04-08 19:23:29.652 +03:00 [DBG] Starting bus instances: IBus
+2022-04-08 19:23:29.656 +03:00 [WRN] Start called, but the host was already started: "rabbitmq://localhost/mbs" (Already Started)
+2022-04-08 19:23:29.706 +03:00 [DBG] Connect: admin@localhost:5672/mbs
+2022-04-08 19:23:29.846 +03:00 [DBG] Connected: admin@localhost:5672/mbs (address: amqp://localhost:5672, local: 53521)
+2022-04-08 19:23:29.942 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/TCMXYZLMMBM_UserPortalModuleWebApi_bus_unpoyygxwurfiesfbdpb19y7fb?temporary=true"
+2022-04-08 19:23:29.987 +03:00 [DBG] Declare queue: name: mbs.userportal.service, durable, consumer-count: 1 message-count: 0
+2022-04-08 19:23:30.017 +03:00 [DBG] Declare exchange: name: mbs.userportal.service, type: fanout, durable
+2022-04-08 19:23:30.035 +03:00 [DBG] Bind queue: source: mbs.userportal.service, destination: mbs.userportal.service
+2022-04-08 19:23:30.141 +03:00 [DBG] Consumer Ok: "rabbitmq://localhost/mbs/mbs.userportal.service" - amq.ctag-AnMdVU7lgv-H-bBYAzfK4g
+2022-04-08 19:23:30.146 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 19:23:30.164 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 19:23:30.164 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 19:23:30.168 +03:00 [INF] Bus listener started!
+2022-04-08 19:35:14.191 +03:00 [ERR] Failed executing DbCommand (148ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid), @p2='?' (DbType = Date), @p3='?', @p4='?', @p5='?' (DbType = Guid), @p6='?' (DbType = Date), @p7='?', @p8='?', @p9='?' (DbType = Binary), @p10='?' (DbType = Binary), @p11='?' (DbType = Object), @p12='?', @p13='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='300']
+INSERT INTO "Users" ("Id", "CreatedBy", "CreatedDate", "EmailAddress", "FirstName", "LastModifiedBy", "LastModifiedDate", "LastName", "MobileNumber", "PasswordHash", "PasswordSalt", "RoleIds", "UserName", "UserStatusId")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13)
+RETURNING "IsActive";
+2022-04-08 19:35:14.677 +03:00 [ERR] An exception occurred in the database while saving changes for context type 'UserPortalModule.UserPortalModuleDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2022-04-08 19:35:15.290 +03:00 [ERR] An error occurred while migrating or initializing the database.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Npgsql.PostgresException (0x80004005): 23502: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|211_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 23502
+    MessageText: null value in column "PasswordHash" of relation "Users" violates not-null constraint
+    Detail: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+    SchemaName: public
+    TableName: Users
+    ColumnName: PasswordHash
+    File: execmain.c
+    Line: 1889
+    Routine: ExecConstraints
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at UserPortalModule.System.SeedSampleData.SeedUsers.SyncAdminUser(Int64 adminRoleId) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SeedUsers.cs:line 32
+   at UserPortalModule.System.SeedSampleData.SampleDataSeeder.SeedAllAsync(CancellationToken cancellationToken) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.Application\System\SeedSampleData\SampleDataSeeder.cs:line 29
+   at Program.<Main>$(String[] args) in C:\Users\burakmustu\source\repos\PrivateSource\ModularBlogSite\src\UserPortalModule\UserPortalModule.WebApi\Program.cs:line 61
+2022-04-08 19:35:15.971 +03:00 [INF] UserApprovedEventConsumer started
+2022-04-08 19:35:15.983 +03:00 [DBG] Subscribing Consumer: UserPortalModule.Consumers.UserApprovedEventConsumer (using supplied consumer factory)
+2022-04-08 19:35:16.054 +03:00 [DBG] Connect receive endpoint: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 19:35:16.306 +03:00 [ERR] UserApprovedEventConsumer error
+2022-04-08 19:35:16.321 +03:00 [DBG] Starting bus: "rabbitmq://localhost/mbs"
+2022-04-08 19:35:16.376 +03:00 [DBG] Starting bus instances: IBus
+2022-04-08 19:35:16.380 +03:00 [WRN] Start called, but the host was already started: "rabbitmq://localhost/mbs" (Already Started)
+2022-04-08 19:35:16.429 +03:00 [DBG] Connect: admin@localhost:5672/mbs
+2022-04-08 19:35:16.715 +03:00 [DBG] Connected: admin@localhost:5672/mbs (address: amqp://localhost:5672, local: 65036)
+2022-04-08 19:35:16.851 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/TCMXYZLMMBM_UserPortalModuleWebApi_bus_ungyyygxwurfixrdbdpb19qng7?temporary=true"
+2022-04-08 19:35:16.893 +03:00 [DBG] Declare queue: name: mbs.userportal.service, durable, consumer-count: 1 message-count: 0
+2022-04-08 19:35:16.917 +03:00 [DBG] Declare exchange: name: mbs.userportal.service, type: fanout, durable
+2022-04-08 19:35:16.965 +03:00 [DBG] Bind queue: source: mbs.userportal.service, destination: mbs.userportal.service
+2022-04-08 19:35:17.052 +03:00 [DBG] Consumer Ok: "rabbitmq://localhost/mbs/mbs.userportal.service" - amq.ctag-JD_uLvPjiheyWU7YkD6p9w
+2022-04-08 19:35:17.056 +03:00 [DBG] Endpoint Ready: "rabbitmq://localhost/mbs/mbs.userportal.service"
+2022-04-08 19:35:17.067 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 19:35:17.067 +03:00 [INF] Bus started: "rabbitmq://localhost/mbs"
+2022-04-08 19:35:17.069 +03:00 [INF] Bus listener started!

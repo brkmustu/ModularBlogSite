@@ -7,6 +7,7 @@ using CoreModule.Domain.Users;
 using CoreModule.Application.Common.Interfaces;
 using CoreModule.Application;
 using CoreModule.Application.Common;
+using CoreModule.Configurations;
 
 namespace UserPortalModule;
 
@@ -70,6 +71,7 @@ public class UserPortalModuleDbContext : DbContext, IUserPortalModuleDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserPortalModuleDbContext).Assembly);
     }
 }

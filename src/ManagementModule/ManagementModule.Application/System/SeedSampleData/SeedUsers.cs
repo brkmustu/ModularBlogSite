@@ -18,7 +18,7 @@ namespace ManagementModule.System.SeedSampleData
 
             if (adminUser is null)
             {
-                User admin = new User("admin", "admin", "admin");
+                User admin = new User("admin", "admin", "admin", "admin@management.com");
 
                 admin.Id = Guid.NewGuid();
 

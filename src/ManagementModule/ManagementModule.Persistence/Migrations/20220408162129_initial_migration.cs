@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ManagementModule.Migrations
 {
-    public partial class initialmigrations : Migration
+    public partial class initial_migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,7 +53,7 @@ namespace ManagementModule.Migrations
                     EmailAddress = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
                     UserStatusId = table.Column<int>(type: "integer", nullable: false, defaultValue: 2),
                     RoleIds = table.Column<long[]>(type: "bigint[]", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "date", nullable: false),
                     LastModifiedBy = table.Column<Guid>(type: "uuid", nullable: true),
@@ -78,4 +78,3 @@ namespace ManagementModule.Migrations
         }
     }
 }
-

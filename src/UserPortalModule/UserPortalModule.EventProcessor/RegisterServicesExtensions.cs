@@ -1,7 +1,7 @@
 ﻿using CoreModule.Application.Common.RabbitMqExtensions;
-using ManagementModule;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UserPortalModule;
 
 public static class RegisterServicesExtensions
 {

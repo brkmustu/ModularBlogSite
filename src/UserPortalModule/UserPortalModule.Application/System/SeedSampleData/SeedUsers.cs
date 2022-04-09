@@ -18,7 +18,7 @@ namespace UserPortalModule.System.SeedSampleData
 
             if (adminUser is null)
             {
-                User admin = new User("portalAdmin", "portalAdmin", "portalAdmin");
+                User admin = new User("admin", "admin", "admin", "admin@userportal.com");
 
                 admin.Id = Guid.NewGuid();
 

@@ -7,6 +7,7 @@ using CoreModule.Domain.Users;
 using CoreModule.Application.Common.Interfaces;
 using CoreModule.Application;
 using CoreModule.Application.Common;
+using CoreModule.Configurations;
 
 namespace ManagementModule;
 
@@ -70,6 +71,7 @@ public class ManagementModuleDbContext : DbContext, IManagementModuleDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ManagementModuleDbContext).Assembly);
     }
 }

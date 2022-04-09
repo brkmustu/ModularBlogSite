@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserPortalModule.Persistenc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserPortalModule.WebApi", "src\UserPortalModule\UserPortalModule.WebApi\UserPortalModule.WebApi.csproj", "{AA4EA029-0480-47AE-A8A7-334E15BE706A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "userPortalModule", "userPortalModule", "{A2060D5B-A87B-4DC8-A825-4C53E44D7191}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "userPortal", "userPortal", "{A2060D5B-A87B-4DC8-A825-4C53E44D7191}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A0ED3698-77B5-408F-9D5B-DEB6C8EDB974}"
 EndProject
@@ -37,7 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "managementModule", "managementModule", "{2F8666CE-BF8D-4280-8EC4-665380AD91E3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "management", "management", "{2F8666CE-BF8D-4280-8EC4-665380AD91E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{71824382-DEBE-48AC-8727-329766C9546C}"
 EndProject
@@ -53,7 +53,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementModule.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreModule.Application.Tests", "src\CoreModule\CoreModule.Application.Tests\CoreModule.Application.Tests.csproj", "{5C854706-3A98-406C-99CA-527B72EA34D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagementModule.EventProcessor", "src\ManagementModule\ManagementModule.EventProcessor\ManagementModule.EventProcessor.csproj", "{A2758FF1-6477-462F-9BDD-B83FB1A81A0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagementModule.EventProcessor", "src\ManagementModule\ManagementModule.EventProcessor\ManagementModule.EventProcessor.csproj", "{A2758FF1-6477-462F-9BDD-B83FB1A81A0A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserPortalModule.EventProcessor", "src\UserPortalModule\UserPortalModule.EventProcessor\UserPortalModule.EventProcessor.csproj", "{93DFF538-6679-4B9D-BCB3-5331D49D1771}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreModule.Persistence", "src\CoreModule\CoreModule.Persistence\CoreModule.Persistence.csproj", "{938150FA-7952-479D-B03E-B2A6D3B73ECE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +117,14 @@ Global
 		{A2758FF1-6477-462F-9BDD-B83FB1A81A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2758FF1-6477-462F-9BDD-B83FB1A81A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2758FF1-6477-462F-9BDD-B83FB1A81A0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93DFF538-6679-4B9D-BCB3-5331D49D1771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93DFF538-6679-4B9D-BCB3-5331D49D1771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93DFF538-6679-4B9D-BCB3-5331D49D1771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93DFF538-6679-4B9D-BCB3-5331D49D1771}.Release|Any CPU.Build.0 = Release|Any CPU
+		{938150FA-7952-479D-B03E-B2A6D3B73ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{938150FA-7952-479D-B03E-B2A6D3B73ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{938150FA-7952-479D-B03E-B2A6D3B73ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{938150FA-7952-479D-B03E-B2A6D3B73ECE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +151,8 @@ Global
 		{8288F340-873B-4213-A208-BC99A3B3A00F} = {AE2EE07E-D960-4A08-A793-B02C78546B14}
 		{5C854706-3A98-406C-99CA-527B72EA34D5} = {258705EE-C488-4813-B26E-D01BB0571452}
 		{A2758FF1-6477-462F-9BDD-B83FB1A81A0A} = {71824382-DEBE-48AC-8727-329766C9546C}
+		{93DFF538-6679-4B9D-BCB3-5331D49D1771} = {A0ED3698-77B5-408F-9D5B-DEB6C8EDB974}
+		{938150FA-7952-479D-B03E-B2A6D3B73ECE} = {1042DD71-9422-4CF8-AFDA-206332D7AF7E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18FFFD96-0778-4D7E-B5B4-B178621A171C}

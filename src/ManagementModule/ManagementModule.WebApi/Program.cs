@@ -74,4 +74,14 @@ app.MapQueries(
     pattern: MessageMapping.FlatApi(new Queries(container), "/api/management/queries/{0}"),
     queryTypes: Bootstrapper.GetKnownQueryTypes());
 
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    app.RegisterWithConsule(app.Urls);
+});
+
+app.Lifetime.ApplicationStopped.Register(() =>
+{
+    app.DeregisterWithConsule(app.Urls);
+});
+
 app.Run();

@@ -3,11 +3,12 @@ using CoreModule.Application.Common.Contracts;
 using CoreModule.Application.Common.Interfaces;
 using CoreModule.Domain.Users;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using UserPortalModule.Common;
 
 namespace UserPortalModule.CommandHandlers;
 
-public class UserUpdateProfileCommand : ICommand
+public class UserUpdateProfileCommand : CommandRequest
 {
     [Required]
     public Guid UserId { get; set; }
@@ -33,6 +34,17 @@ public class UserUpdateProfileCommand : ICommand
     public string EmailAddress { get; set; }
 
     public long[] RoleIds { get; set; }
+
+    [JsonIgnore]
+    public override CrossCuttingConcerns[] ApplicableConcerns => new[]
+    {
+        CrossCuttingConcerns.Auditing,
+        CrossCuttingConcerns.Authorization,
+        CrossCuttingConcerns.Validation
+    };
+
+    [JsonIgnore]
+    public override string OperationName => "UserUpdateProfileCommand";
 
     public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserUpdateProfileCommand>
     {

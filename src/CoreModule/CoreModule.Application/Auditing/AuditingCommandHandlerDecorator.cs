@@ -7,6 +7,7 @@ using System.Text.Json;
 namespace CoreModule.Application.Auditing;
 
 public class AuditingCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
+    where TCommand : CommandRequest
 {
     private readonly ILogger<AuditLogInfo> _logger;
     private readonly ICurrentUserService _currentUserService;
@@ -21,10 +22,13 @@ public class AuditingCommandHandlerDecorator<TCommand> : ICommandHandler<TComman
 
     public async Task<Result> Handle(TCommand command)
     {
+        if (!command.ApplicableConcerns.Contains(CrossCuttingConcerns.Auditing))
+            return await _decorate.Handle(command);
+
         Result result;
         var auditLog = new AuditLogInfo();
         auditLog.ApplicationName = typeof(TCommand).Name;
-        auditLog.CorrelationId = Guid.NewGuid().ToString();
+        auditLog.CorrelationId = command.CorrelationId.ToString();
         auditLog.Request = JsonSerializer.Serialize(command, new JsonSerializerOptions { WriteIndented = false });
         auditLog.ExecutionTime = DateTime.Now;
         if (_currentUserService.IsAuthenticated)

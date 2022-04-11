@@ -7,10 +7,11 @@ using CoreModule.Domain.Users;
 using System.ComponentModel.DataAnnotations;
 using CoreModule.Application.Common.MessageContracts;
 using MassTransit;
+using System.Text.Json.Serialization;
 
 namespace UserPortalModule.CommandHandlers;
 
-public class UserRegistrationAnonymousCommand : ICommand
+public class UserRegistrationCommand : CommandRequest
 {
     [Required(AllowEmptyStrings = false)]
     [StringLength(70)]
@@ -37,7 +38,17 @@ public class UserRegistrationAnonymousCommand : ICommand
 
     public long[] RoleIds { get; set; }
 
-    public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserRegistrationAnonymousCommand>
+    [JsonIgnore]
+    public override CrossCuttingConcerns[] ApplicableConcerns => new[]
+    {
+        CrossCuttingConcerns.Auditing,
+        CrossCuttingConcerns.Validation
+    };
+
+    [JsonIgnore]
+    public override string OperationName => "UserRegistrationCommand";
+
+    public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserRegistrationCommand>
     {
         public Handler(
                 IUserPortalModuleDbContext dbContext, 
@@ -47,7 +58,7 @@ public class UserRegistrationAnonymousCommand : ICommand
         {
         }
 
-        public async Task<Result> Handle(UserRegistrationAnonymousCommand command)
+        public async Task<Result> Handle(UserRegistrationCommand command)
         {
             var user = _mapper.Map<User>(command);
 
@@ -61,7 +72,7 @@ public class UserRegistrationAnonymousCommand : ICommand
 
             await _publishEndpoint.Publish<UserRegisteredEvent>(new
             {
-                User = user,
+                User = _mapper.Map<UserDto>(user),
                 Password = command.Password,
             });
 

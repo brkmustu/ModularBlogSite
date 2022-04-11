@@ -2,9 +2,9 @@
 using ManagementModule.Consumers;
 using MassTransit;
 
-public static class QueueExtensions
+public static class QueueBootstrapper
 {
-    public static IServiceCollection RegisterQueueServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddQueueServices(this IServiceCollection services, IConfiguration configuration)
     {
         var appSettingsSection = configuration.GetSection(RabbitMqOptions.SectionName);
         var options = appSettingsSection.Get<RabbitMqOptions>();

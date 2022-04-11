@@ -2,24 +2,34 @@
 using CoreModule.Application.Common.Contracts;
 using CoreModule.Application.Common.Interfaces;
 using CoreModule.Application.Common.MessageContracts;
-using CoreModule.Application.Common.RabbitMqExtensions;
 using CoreModule.Domain.Users;
 using ManagementModule.Common;
 using MassTransit;
-using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ManagementModule.CommandHandlers;
 
 /// <summary>
 /// kayıt kabul ret bilgisi için hazırlanmış olan api servisidir.
 /// </summary>
-public class UserChangeStatusCommand : ICommand
+public class UserChangeStatusCommand : CommandRequest
 {
     [Required]
     public Guid UserId { get; set; }
     [Required]
     public bool IsApproved { get; set; }
+
+    [JsonIgnore]
+    public override CrossCuttingConcerns[] ApplicableConcerns => new[]
+{
+        CrossCuttingConcerns.Auditing,
+        CrossCuttingConcerns.Authorization,
+        CrossCuttingConcerns.Validation
+    };
+
+    [JsonIgnore]
+    public override string OperationName => "UserChangeStatusCommand";
 
     public class Handler : ManagementModuleApplicationService, ICommandHandler<UserChangeStatusCommand>
     {

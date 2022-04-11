@@ -1,9 +1,9 @@
-﻿using CoreModule.Domain.Users;
+﻿using CoreModule.Application.Common.Contracts;
 
 namespace CoreModule.Application.Common.MessageContracts;
 
 public class UserRegisteredEvent
 {
-    public User User { get; set; }
+    public UserDto User { get; set; }
     public string Password { get; set; }
 }

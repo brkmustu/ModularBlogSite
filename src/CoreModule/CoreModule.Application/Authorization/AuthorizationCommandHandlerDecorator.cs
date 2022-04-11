@@ -5,6 +5,7 @@ using System.Security;
 namespace CoreModule.Application.Authorization;
 
 public class AuthorizationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
+    where TCommand : CommandRequest
 {
     private readonly ICommandHandler<TCommand> decoratedHandler;
     private readonly ICurrentUserService currentUser;
@@ -15,16 +16,17 @@ public class AuthorizationCommandHandlerDecorator<TCommand> : ICommandHandler<TC
         this.currentUser = currentUser;
     }
 
-    public Task<Result> Handle(TCommand query)
+    public Task<Result> Handle(TCommand command)
     {
-        this.Authorize();
+        this.Authorize(command);
 
-        return this.decoratedHandler.Handle(query);
+        return this.decoratedHandler.Handle(command);
     }
 
-    private void Authorize()
+    private void Authorize(TCommand command)
     {
-        if (!typeof(TCommand).Name.EndsWith(AuthorizationConsts.AnonymousCommandEndsWith) && !this.currentUser.IsInRole(nameof(TCommand)))
+        if (command.ApplicableConcerns.Contains(CrossCuttingConcerns.Authorization) 
+            && !this.currentUser.IsInRole(command.OperationName))
         {
             throw new SecurityException();
         }

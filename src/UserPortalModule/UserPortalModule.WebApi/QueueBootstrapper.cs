@@ -2,11 +2,11 @@
 using MassTransit;
 using UserPortalModule.Consumers;
 
-public static class QueueExtensions
+public static class QueueBootstrapper
 {
-    public static IServiceCollection RegisterQueueServices(this IServiceCollection services, IConfiguration section)
+    public static IServiceCollection AddQueueServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var appSettingsSection = section.GetSection(RabbitMqOptions.SectionName);
+        var appSettingsSection = configuration.GetSection(RabbitMqOptions.SectionName);
         var options = appSettingsSection.Get<RabbitMqOptions>();
 
         services.AddMassTransit(c =>
@@ -33,32 +33,6 @@ public static class QueueExtensions
                 });
             });
         });
-
-        //services.AddMassTransit(c =>
-        //{
-        //    c.AddConsumer<UserApprovedEventConsumer>();
-        //});
-
-        //services.AddSingleton(provider => Bus.Factory.CreateUsingRabbitMq(cfg =>
-        //{
-        //    cfg.Host(options.HostName, options.VirtualHost,
-        //        h =>
-        //        {
-        //            h.Username(options.UserName);
-        //            h.Password(options.Password);
-        //        });
-
-        //    cfg.ReceiveEndpoint(RabbitMqConsts.ManagementModuleQueueName, e =>
-        //    {
-        //        e.UseCircuitBreaker(cb =>
-        //        {
-        //            cb.TrackingPeriod = TimeSpan.FromMinutes(1);
-        //            cb.TripThreshold = 15;
-        //            cb.ActiveThreshold = 10;
-        //            cb.ResetInterval = TimeSpan.FromMinutes(5);
-        //        });
-        //    });
-        //}));
 
         services.AddSingleton<IPublishEndpoint>(provider => provider.GetRequiredService<IBusControl>());
         services.AddSingleton<ISendEndpointProvider>(provider => provider.GetRequiredService<IBusControl>());

@@ -3,17 +3,29 @@ using CoreModule.Application.Common.Contracts;
 using CoreModule.Application.Common.Interfaces;
 using ManagementModule.Common;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ManagementModule.CommandHandlers;
 
 /// <summary>
 /// kullanıcıyı aktifleştiren yada pasife alınmasına yardımcı olan api servisidir.
 /// </summary>
-public class UserActivationStatusCommand : ICommand
+public class UserActivationStatusCommand : CommandRequest
 {
     [Required]
     public Guid UserId { get; set; }
     public bool IsActive { get; set; }
+
+    [JsonIgnore]
+    public override CrossCuttingConcerns[] ApplicableConcerns => new[] 
+    {
+        CrossCuttingConcerns.Auditing,
+        CrossCuttingConcerns.Authorization,
+        CrossCuttingConcerns.Validation
+    };
+
+    [JsonIgnore]
+    public override string OperationName => "UserActivationStatusCommand";
 
     public class Handler : ManagementModuleApplicationService, ICommandHandler<UserActivationStatusCommand>
     {

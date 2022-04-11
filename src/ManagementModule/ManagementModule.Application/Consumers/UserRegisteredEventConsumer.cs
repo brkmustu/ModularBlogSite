@@ -1,6 +1,8 @@
-﻿using CoreModule.Application.Common.MessageContracts;
+﻿using AutoMapper;
+using CoreModule.Application.Common.MessageContracts;
 using CoreModule.Application.Extensions.Hashing;
 using CoreModule.Domain.Permissions;
+using CoreModule.Domain.Users;
 using ManagementModule.Common;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -9,16 +11,19 @@ namespace ManagementModule.Consumers;
 
 public class UserRegisteredEventConsumer : IConsumer<UserRegisteredEvent>
 {
+    private readonly IMapper _mapper;
     private readonly ILogger<UserRegisteredEventConsumer> _logger;
     private readonly IManagementModuleDbContext _dbContext;
-    public UserRegisteredEventConsumer(IManagementModuleDbContext dbContext, ILogger<UserRegisteredEventConsumer> logger)
+    public UserRegisteredEventConsumer(IManagementModuleDbContext dbContext, ILogger<UserRegisteredEventConsumer> logger, IMapper mapper)
     {
         _dbContext = dbContext;
         _logger = logger;
+        _mapper = mapper;
     }
     public async Task Consume(ConsumeContext<UserRegisteredEvent> context)
     {
-        var portalUser = context.Message.User;
+        var portalUserDto = context.Message.User;
+        var portalUser = _mapper.Map<User>(portalUserDto);
 
         var encryptedPassword = context.Message.Password.CreatePasswordHash();
 

@@ -1,10 +1,12 @@
-﻿using CoreModule.Domain.Users;
+﻿using CoreModule.Application.Extensions.Hashing;
+using CoreModule.Domain.Users;
 using UserPortalModule.Common;
 
 namespace UserPortalModule.System.SeedSampleData
 {
     public class SeedUsers
     {
+        private const string AdminPassword = "1qaz!2wsx";
         private readonly IUserPortalModuleDbContext _dbContext;
 
         public SeedUsers(IUserPortalModuleDbContext dbContext)
@@ -20,7 +22,15 @@ namespace UserPortalModule.System.SeedSampleData
             {
                 User admin = new User("admin", "admin", "admin", "admin@userportal.com");
 
+                var encryptedPassword = AdminPassword.CreatePasswordHash();
+
+                admin.SetPasswordHash(encryptedPassword.PasswordHash);
+                admin.SetPasswordSalt(encryptedPassword.PasswordSalt);
+
                 admin.Id = Guid.NewGuid();
+
+                admin.SetUserStatus(UserStatusType.Active);
+                admin.Activate();
 
                 if (adminRoleId > 0)
                 {

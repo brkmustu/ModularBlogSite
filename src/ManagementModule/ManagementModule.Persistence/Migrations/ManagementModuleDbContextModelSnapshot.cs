@@ -108,7 +108,6 @@ namespace ManagementModule.Migrations
                         .HasColumnType("character varying(70)");
 
                     b.Property<string>("MobileNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
@@ -123,7 +122,6 @@ namespace ManagementModule.Migrations
                         .HasColumnType("bytea");
 
                     b.Property<long[]>("RoleIds")
-                        .IsRequired()
                         .HasColumnType("bigint[]");
 
                     b.Property<string>("UserName")

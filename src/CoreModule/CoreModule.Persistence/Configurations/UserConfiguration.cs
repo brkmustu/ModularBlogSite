@@ -23,6 +23,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(70);
 
         builder.Property(x => x.MobileNumber)
+            .IsRequired(false)
             .HasMaxLength(20);
 
         builder.Property(x => x.EmailAddress)
@@ -43,11 +44,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.UserStatusId)
             .HasDefaultValue(((int)UserStatusType.WaitingForApproval));
 
+        builder.Property(x => x.CreatedBy)
+            .IsRequired();
+
         builder.Property(x => x.CreatedDate)
+            .IsRequired()
             .HasColumnType("date");
 
         builder.Property(x => x.LastModifiedDate)
+            .IsRequired(false)
             .HasColumnType("date");
+
+        builder.Property(x => x.LastModifiedBy)
+            .IsRequired(false);
+
+        builder.Property(x => x.RoleIds)
+            .IsRequired(false);
     }
 }
 

@@ -3,7 +3,6 @@ using Serilog;
 using SimpleInjector;
 using MassTransit;
 using CoreModule.Application.Common.RabbitMqExtensions;
-using UserPortalModule.WebApi.Workers;
 
 namespace UserPortalModule
 {
@@ -44,11 +43,9 @@ namespace UserPortalModule
 
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
-            services.AddHostedService<UserApprovedEventWorker>();
+            services.AddQueueServices(configuration);
 
-            services.AddHostedService<BusListenerBackgroundService>();
-
-            services.RegisterQueueServices(configuration);
+            services.AddConsuleClient(configuration);
 
             return services;
         }

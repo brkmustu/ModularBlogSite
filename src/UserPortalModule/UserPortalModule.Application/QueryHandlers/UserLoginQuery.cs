@@ -5,11 +5,12 @@ using CoreModule.Application.Extensions;
 using CoreModule.Application.Extensions.Hashing;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using UserPortalModule.Common;
 
 namespace UserPortalModule.QueryHandlers;
 
-public class UserLoginAnonymousQuery : IQuery<AccessToken>
+public class UserLoginQuery : QueryRequest<AccessToken>
 {
     [Required]
     public string UserName { get; set; }
@@ -17,7 +18,18 @@ public class UserLoginAnonymousQuery : IQuery<AccessToken>
     [Required]
     public string Password { get; set; }
 
-    public class Handler : UserPortalModuleApplicationService, IQueryHandler<UserLoginAnonymousQuery, AccessToken>
+
+    [JsonIgnore]
+    public override CrossCuttingConcerns[] ApplicableConcerns => new[]
+    {
+        CrossCuttingConcerns.Auditing,
+        CrossCuttingConcerns.Validation
+    };
+
+    [JsonIgnore]
+    public override string OperationName => "UserLoginQuery";
+
+    public class Handler : UserPortalModuleApplicationService, IQueryHandler<UserLoginQuery, AccessToken>
     {
         private readonly TokenOptions _tokenOptions;
         public Handler(IUserPortalModuleDbContext dbContext, IMapper mapper, IOptions<TokenOptions> tokenOptions) : base(dbContext, mapper)
@@ -25,7 +37,7 @@ public class UserLoginAnonymousQuery : IQuery<AccessToken>
             _tokenOptions = tokenOptions.Value;
         }
 
-        public Task<AccessToken> Handle(UserLoginAnonymousQuery query)
+        public Task<AccessToken> Handle(UserLoginQuery query)
         {
             var user = _dbContext.Users.Where(x => x.UserName.Equals(query.UserName)).FirstOrDefault();
 

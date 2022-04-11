@@ -11,7 +11,7 @@ public class User : AuditableEntity
     public string MobileNumber { get; private set; }
     public string EmailAddress { get; private set; }
     public int UserStatusId { get; private set; }
-    public long[] RoleIds { get; private set; }
+    public long[]? RoleIds { get; private set; }
 
     internal User() { }
 

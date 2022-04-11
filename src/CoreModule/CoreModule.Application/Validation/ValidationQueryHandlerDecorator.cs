@@ -4,7 +4,7 @@ using CoreModule.Application.Common.Interfaces;
 namespace CoreModule.Application.Validation;
 
 public class ValidationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult>
-    where TQuery : IQuery<TResult>
+    where TQuery : QueryRequest<TResult>
 {
     private readonly IQueryHandler<TQuery, TResult> _decorate;
     private readonly IValidator _validator;
@@ -17,6 +17,9 @@ public class ValidationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQ
 
     public Task<TResult> Handle(TQuery query)
     {
+        if (!query.ApplicableConcerns.Contains(CrossCuttingConcerns.Validation))
+            return _decorate.Handle(query);
+
         if (query == null) throw new ArgumentNullException(nameof(query));
 
         // validate the supplied command.

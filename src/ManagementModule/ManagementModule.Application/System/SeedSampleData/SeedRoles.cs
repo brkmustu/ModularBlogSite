@@ -65,6 +65,8 @@ public class SeedRoles
 
         if (portalRole is null)
         {
+            //var getUserListQuery
+
             _context.Roles.Add(new Role { 
                 Name = PermissionNames.Portal, 
                 Description = "Portal kullanıcıları için oluşturulan rol tanımıdır. Management sisteminde herhangi bir yetkisi varsayılan olarak olmayacaktır.",

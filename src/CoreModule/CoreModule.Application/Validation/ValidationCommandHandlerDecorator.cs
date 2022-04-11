@@ -4,6 +4,7 @@ using CoreModule.Application.Common.Interfaces;
 namespace CoreModule.Application.Validation;
 
 public class ValidationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
+    where TCommand : CommandRequest
 {
     private readonly ICommandHandler<TCommand> _decorate;
     private readonly IValidator _validator;
@@ -16,6 +17,9 @@ public class ValidationCommandHandlerDecorator<TCommand> : ICommandHandler<TComm
 
     public Task<Result> Handle(TCommand command)
     {
+        if (!command.ApplicableConcerns.Contains(CrossCuttingConcerns.Validation))
+            return _decorate.Handle(command);
+
         if (command == null) throw new ArgumentNullException(nameof(command));
 
         // validate the supplied command.

@@ -57,7 +57,7 @@ public class GetUserListQueryTests : TestBase
 
         var response = await handler.Handle(query);
 
-        Assert.Equal(response.Items.Length, activeUsers.Count());
+        Assert.Equal(response.Users.Items.Length, activeUsers.Count());
     }
 }
 

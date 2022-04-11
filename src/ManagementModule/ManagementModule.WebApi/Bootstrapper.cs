@@ -42,7 +42,9 @@ namespace ManagementModule
 
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
-            services.RegisterQueueServices(configuration);
+            services.AddQueueServices(configuration);
+
+            services.AddConsuleClient(configuration);
 
             return services;
         }

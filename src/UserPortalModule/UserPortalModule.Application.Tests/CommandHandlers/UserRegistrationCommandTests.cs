@@ -18,7 +18,7 @@ public class UserRegistrationCommandTests : TestBase
         var fixture = new Fixture()
             .Customize(new AutoMoqCustomization());
 
-        var command = fixture.Create<UserRegistrationAnonymousCommand>();
+        var command = fixture.Create<UserRegistrationCommand>();
 
         var users = fixture.CreateMany<User>(5);
 

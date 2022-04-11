@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace UserPortalModule.Migrations
+namespace ManagementModule.Migrations
 {
     public partial class initial_migration : Migration
     {
@@ -49,10 +49,10 @@ namespace UserPortalModule.Migrations
                     PasswordSalt = table.Column<byte[]>(type: "bytea", maxLength: 200, nullable: false),
                     FirstName = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
                     LastName = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
-                    MobileNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    MobileNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     EmailAddress = table.Column<string>(type: "character varying(70)", maxLength: 70, nullable: false),
                     UserStatusId = table.Column<int>(type: "integer", nullable: false, defaultValue: 2),
-                    RoleIds = table.Column<long[]>(type: "bigint[]", nullable: false),
+                    RoleIds = table.Column<long[]>(type: "bigint[]", nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "date", nullable: false),

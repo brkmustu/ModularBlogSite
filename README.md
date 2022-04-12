@@ -16,15 +16,15 @@ Arkada iki adet mikroservis bulunuyor. Biri "Management", diðeri "UserPortal" ol
 
 "Management" mikroservisi þu 3 temel apiyi hedef almaktadýr;
 
-	- UserActivationStatusCommand	=> kullanýcýyý aktife yada pasife çekmeye yardýmcý olur (kullanýcý üstündeki aktif pasif bilgisini günceller)
-	- UserChangeStatusCommand		=> kullanýcýnýn statu bilgisini güncellemeye yardýmcý olur (statü bilgisi aktiflikten daha detaylý bir bilgidir. onay bekliyor, reddedildi vs)
-	- GetUserListQuery				=> kullanýcý listesini çekmek için kullanýlacak olan api servisidir, paging yapýsý mevcuttur.
+	- UserActivationStatusCommand => kullanýcýyý aktife yada pasife çekmeye yardýmcý olur (kullanýcý üstündeki aktif pasif bilgisini günceller)
+	- UserChangeStatusCommand => kullanýcýnýn statu bilgisini güncellemeye yardýmcý olur (statü bilgisi aktiflikten daha detaylý bir bilgidir. onay bekliyor, reddedildi vs)
+	- GetUserListQuery => kullanýcý listesini çekmek için kullanýlacak olan api servisidir, paging yapýsý mevcuttur.
 
 "UserPortal" mikroservisi þu 3 temel apiyi hedef almaktadýr;
 
-	- UserRegistrationCommand		=> kullanýcý kayýt iþlemleri için bu apiyi kullanabilirsiniz,
-	- UserUpdateProfileCommand		=> kullanýcý güncelleme iþlemleri için bu api hazýrlanmýþtýr,
-	- UserLoginQuery				=> login iþlemi için bu api hazýrlanmýþtýr.
+	- UserRegistrationCommand => kullanýcý kayýt iþlemleri için bu apiyi kullanabilirsiniz,
+	- UserUpdateProfileCommand => kullanýcý güncelleme iþlemleri için bu api hazýrlanmýþtýr,
+	- UserLoginQuery => login iþlemi için bu api hazýrlanmýþtýr.
 
 Uygulamada Jwt token bazlý authentication yapýsý kurulmuþtur. Herhangi bir serviste yetki gerektiren bir api'ye istek atabilmek için,
 öncelikle "UserPortal" mikroservisi altýndaki "UserLoginQuery" apisi yardýmý ile token almak gerekmektedir. Bearer token schemasý kullanýlmýþtýr.

@@ -32,4 +32,8 @@ Uygulamada Jwt token bazlý authentication yapýsý kurulmuþtur. Herhangi bir servi
 Uygulamada hali hazýrda swagger entegrasyonu mevcuttur ve uygulama docker compose ile lokalinizde ayaða kaldýrabileceðiniz vaziyette olduðundan,
 swagger üzerinden ilgili api servislerine ve modellerine eriþebilirsiniz.
 
+Uygulama için örnek flow aþaðýdaki gibidir;
+
+https://github.com/brkmustu/ModularBlogSite/blob/master/sample_flow.png
+
 Þimdilik bu kadar :)

@@ -1,4 +1,4 @@
-﻿using CoreModule.Application.Extensions.Hashing;
+﻿using CoreModule.Application.SeedSampleData;
 using CoreModule.Domain.Users;
 using UserPortalModule.Common;
 
@@ -6,7 +6,6 @@ namespace UserPortalModule.System.SeedSampleData
 {
     public class SeedUsers
     {
-        private const string AdminPassword = "1qaz!2wsx";
         private readonly IUserPortalModuleDbContext _dbContext;
 
         public SeedUsers(IUserPortalModuleDbContext dbContext)
@@ -16,21 +15,11 @@ namespace UserPortalModule.System.SeedSampleData
 
         public async Task SyncAdminUser(long adminRoleId)
         {
-            var adminUser = _dbContext.Users.Where(x => x.UserName == "portalAdmin").FirstOrDefault();
+            var adminUser = _dbContext.Users.Where(x => x.UserName == "admin").FirstOrDefault();
 
             if (adminUser is null)
             {
-                User admin = new User("admin", "admin", "admin", "admin@userportal.com");
-
-                var encryptedPassword = AdminPassword.CreatePasswordHash();
-
-                admin.SetPasswordHash(encryptedPassword.PasswordHash);
-                admin.SetPasswordSalt(encryptedPassword.PasswordSalt);
-
-                admin.Id = Guid.NewGuid();
-
-                admin.SetUserStatus(UserStatusType.Active);
-                admin.Activate();
+                User admin = SeedingConsts.AdminUser();
 
                 if (adminRoleId > 0)
                 {

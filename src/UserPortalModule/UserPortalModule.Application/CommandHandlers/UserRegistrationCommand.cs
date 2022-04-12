@@ -2,12 +2,13 @@
 using UserPortalModule.Common;
 using CoreModule.Application.Common.Contracts;
 using CoreModule.Application.Common.Interfaces;
-using CoreModule.Application.Extensions.Hashing;
 using CoreModule.Domain.Users;
 using System.ComponentModel.DataAnnotations;
 using CoreModule.Application.Common.MessageContracts;
 using MassTransit;
-using System.Text.Json.Serialization;
+using CoreModule.Application.Extensions.Hashing;
+using UserPortalModule.Common.Contracts;
+using CoreModule.Application.CrossCuttingConcerns;
 
 namespace UserPortalModule.CommandHandlers;
 
@@ -38,16 +39,8 @@ public class UserRegistrationCommand : CommandRequest
 
     public long[] RoleIds { get; set; }
 
-    [JsonIgnore]
-    public override CrossCuttingConcerns[] ApplicableConcerns => new[]
-    {
-        CrossCuttingConcerns.Auditing,
-        CrossCuttingConcerns.Validation
-    };
-
-    [JsonIgnore]
-    public override string OperationName => "UserRegistrationCommand";
-
+    [ValidationDecorator]
+    [AuditingDecorator]
     public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserRegistrationCommand>
     {
         public Handler(

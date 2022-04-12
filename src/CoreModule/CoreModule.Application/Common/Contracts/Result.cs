@@ -25,6 +25,10 @@ public class Result
     {
         return new Result(true);
     }
+    public static Result<TData> Success<TData>(TData data)
+    {
+        return new Result<TData>(true, data);
+    }
     public static Result Success(string message)
     {
         return new Result(true, message);
@@ -32,5 +36,9 @@ public class Result
     public static Result Failure(IEnumerable<string> errors)
     {
         return new Result(false, errors);
+    }
+    public static Result<TData> Failure<TData>(IEnumerable<string> errors)
+    {
+        return new Result<TData>(false, errors);
     }
 }

@@ -8,6 +8,9 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/Gateways/PublicApiGateway.Host/PublicApiGateway.Host.csproj", "src/Gateways/PublicApiGateway.Host/"]
+COPY ["src/CoreModule/CoreModule.Web/CoreModule.Web.csproj", "src/CoreModule/CoreModule.Web/"]
+COPY ["src/CoreModule/CoreModule.Application/CoreModule.Application.csproj", "src/CoreModule/CoreModule.Application/"]
+COPY ["src/CoreModule/CoreModule.Domain/CoreModule.Domain.csproj", "src/CoreModule/CoreModule.Domain/"]
 RUN dotnet restore "src/Gateways/PublicApiGateway.Host/PublicApiGateway.Host.csproj"
 COPY . .
 WORKDIR "/src/src/Gateways/PublicApiGateway.Host"

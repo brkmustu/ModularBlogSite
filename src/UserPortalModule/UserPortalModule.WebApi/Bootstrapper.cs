@@ -3,6 +3,7 @@ using Serilog;
 using SimpleInjector;
 using MassTransit;
 using CoreModule.Application.Common.RabbitMqExtensions;
+using CoreModule.Application.Common.Contracts;
 
 namespace UserPortalModule
 {
@@ -38,6 +39,8 @@ namespace UserPortalModule
             services.AddWebCore(configuration);
 
             services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
+
+            services.Configure<TokenOptions>(configuration.GetSection(TokenOptions.SectionName));
 
             services.AddHttpContextAccessor();
 

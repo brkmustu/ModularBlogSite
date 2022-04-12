@@ -25,7 +25,7 @@ public class UserApprovedEventWorker : BackgroundService
         {
             _logger.LogInformation("UserRegisteredEventConsumer started");
 
-            var hostReceiveEndpointHandler = _busControl.ConnectReceiveEndpoint(RabbitMqConsts.UserPortalModuleQueueName, x =>
+            var hostReceiveEndpointHandler = _busControl.ConnectReceiveEndpoint(RabbitMqConsts.UserPortalModule_UserApproved_QueueName, x =>
             {
                 x.Consumer<UserApprovedEventConsumer>(_serviceProvider);
             });

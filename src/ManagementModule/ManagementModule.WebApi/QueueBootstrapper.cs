@@ -6,12 +6,12 @@ public static class QueueBootstrapper
 {
     public static IServiceCollection AddQueueServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var appSettingsSection = configuration.GetSection(RabbitMqOptions.SectionName);
-        var options = appSettingsSection.Get<RabbitMqOptions>();
+        var options = CommonSettings.GetRabbitMqOptions(configuration);
 
         services.AddMassTransit(c =>
         {
             c.AddConsumer<UserRegisteredEventConsumer>();
+            c.AddConsumer<SyncManagementDbPermissionConsumer>();
 
             c.UsingRabbitMq((context, config) =>
             {
@@ -19,17 +19,6 @@ public static class QueueBootstrapper
                 {
                     hc.Username(options.UserName);
                     hc.Password(options.Password);
-                });
-
-                config.ReceiveEndpoint(RabbitMqConsts.ManagementModuleQueueName, e =>
-                {
-                    e.UseCircuitBreaker(cb =>
-                    {
-                        cb.TrackingPeriod = TimeSpan.FromMinutes(1);
-                        cb.TripThreshold = 15;
-                        cb.ActiveThreshold = 10;
-                        cb.ResetInterval = TimeSpan.FromMinutes(5);
-                    });
                 });
             });
         });

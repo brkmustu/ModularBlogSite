@@ -5,7 +5,7 @@ using System.Security;
 namespace CoreModule.Application.Authorization;
 
 public class AuthorizationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult>
-    where TQuery : QueryRequest<TResult>
+    where TQuery : BaseQueryRequest<TResult>
 {
     private readonly IQueryHandler<TQuery, TResult> decoratedHandler;
     private readonly ICurrentUserService currentUser;
@@ -25,8 +25,7 @@ public class AuthorizationQueryHandlerDecorator<TQuery, TResult> : IQueryHandler
 
     private void Authorize(TQuery query)
     {
-        if (query.ApplicableConcerns.Contains(CrossCuttingConcerns.Authorization) 
-            && !this.currentUser.IsInRole(query.OperationName))
+        if (!this.currentUser.IsInRole(query.GetPermissionName()))
         {
             throw new SecurityException();
         }

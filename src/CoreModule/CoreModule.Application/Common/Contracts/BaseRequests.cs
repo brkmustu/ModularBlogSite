@@ -2,18 +2,18 @@
 
 public abstract class BaseRequest
 {
-
-    /// <summary>
-    /// Uygulanacak endişelerin dizisidir.
-    /// Örn: Authorization uygulanmasını istediğimiz 
-    /// </summary>
-    public virtual CrossCuttingConcerns[] ApplicableConcerns { get; } = new CrossCuttingConcerns[] { CrossCuttingConcerns.Validation };
-    public abstract string OperationName { get; }
+    public virtual string OperationName { get; }
+    public abstract string ModuleName { get; }
     public Guid CorrelationId { get; } = Guid.NewGuid();
 }
-public abstract class CommandRequest : BaseRequest, ICommand
+
+public abstract class BaseCommandRequest : BaseRequest, ICommand { }
+public abstract class BaseQueryRequest<TResult> : BaseRequest, IQuery<TResult> { }
+
+public static class BaseRequestExtensions
 {
-}
-public abstract class QueryRequest<TResult> : BaseRequest, IQuery<TResult>
-{
+    public static string GetPermissionName(this BaseRequest baseRequest)
+    {
+        return baseRequest.ModuleName + "." + baseRequest.OperationName;
+    }
 }

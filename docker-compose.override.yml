@@ -1,0 +1,114 @@
+version: '3.4'
+
+services:
+  publicapigateway.host:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - GlobalConfiguration__ServiceDiscoveryProvider__Host=s_consul
+      - GlobalConfiguration__ServiceDiscoveryProvider__Port=8500
+      - GlobalConfiguration__ServiceDiscoveryProvider__Type=Consul
+    ports:
+      - "5000:80"
+      - "7000:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  managementmodule.webapi:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ServiceName: managementmodule.webapi
+      ServicePort: 5010
+      ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      ConsulConfig__Address: http://s_consul:8500
+      RabbitMqOptions__HostName: rabbitmq
+      RabbitMqOptions__VirtualHost: mbs
+      RabbitMqOptions__UserName: admin
+      RabbitMqOptions__Password: 123456
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: ManagementServiceLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    ports:
+      - "5010:80"
+
+  userportalmodule.webapi:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:80
+      ServiceName: userportalmodule.webapi
+      ServicePort: 5020
+      ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      ConsulConfig__Address: http://s_consul:8500
+      RabbitMqOptions__HostName: rabbitmq
+      RabbitMqOptions__VirtualHost: mbs
+      RabbitMqOptions__UserName: admin
+      RabbitMqOptions__Password: 123456
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: UserPortalServiceLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    ports:
+      - "5020:80"
+
+  managementmodule.eventprocessor:
+    environment:
+      ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      RabbitMqOptions__HostName: rabbitmq
+      RabbitMqOptions__VirtualHost: mbs
+      RabbitMqOptions__UserName: admin
+      RabbitMqOptions__Password: 123456
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: ManagementEventLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+
+  userportalmodule.eventprocessor:
+    environment:
+      ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      RabbitMqOptions__HostName: rabbitmq
+      RabbitMqOptions__VirtualHost: mbs
+      RabbitMqOptions__UserName: admin
+      RabbitMqOptions__Password: 123456
+      Serilog__WriteTo__Name: MongoDBBson
+      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
+      Serilog__WriteTo__0__Args__collectionName: UserPortalEventLogs
+      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
+      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+      
+  postgresql-master:
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=postgres
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '5432:5432'
+
+  pgadmin:
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-postgres}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '${PGADMIN_PORT:-5050}:80'
+
+  s_consul:
+    ports:
+      - 8500:8500
+      - 8600:8600/tcp
+      - 8600:8600/udp
+
+  rabbitmq:
+    environment:
+      - RABBITMQ_DEFAULT_VHOST=mbs
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123456
+    ports:
+        - 5672:5672
+        - 15672:15672

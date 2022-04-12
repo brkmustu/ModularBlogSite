@@ -9,34 +9,13 @@ using SimpleInjector;
 using CoreModule.Application.Authorization;
 using CoreModule.Application;
 using Microsoft.Extensions.Configuration;
+using CoreModule.Application.CrossCuttingConcerns;
 
 namespace UserPortalModule
 {
     public static class ApplicationLayerBootstrapper
     {
         private static readonly Assembly[] ApplicationLayerAssemblies = new[] { Assembly.GetExecutingAssembly() };
-
-        public static Container AddApplication(this Container container)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException(nameof(container));
-            }
-
-            container.RegisterInstance<IValidator>(new DataAnnotationsValidator());
-
-            container.Register(typeof(ICommandHandler<>), ApplicationLayerAssemblies);
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(AuthorizationCommandHandlerDecorator<>));
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(AuditingCommandHandlerDecorator<>));
-            container.RegisterDecorator(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
-
-            container.Register(typeof(IQueryHandler<,>), ApplicationLayerAssemblies);
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(AuthorizationQueryHandlerDecorator<,>));
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(AuditingQueryHandlerDecorator<,>));
-            container.RegisterDecorator(typeof(IQueryHandler<,>), typeof(ValidationQueryHandlerDecorator<,>));
-
-            return container;
-        }
 
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
@@ -50,6 +29,52 @@ namespace UserPortalModule
             services.AddTransient<SampleDataSeeder>();
 
             return services;
+        }
+
+        public static Container AddApplication(this Container container)
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException(nameof(container));
+            }
+
+            container.RegisterInstance<IValidator>(new DataAnnotationsValidator());
+
+            container.Register(typeof(ICommandHandler<>), ApplicationLayerAssemblies);
+            container.RegisterDecorator(
+                    typeof(ICommandHandler<>),
+                    typeof(AuditingCommandHandlerDecorator<>),
+                    x => x.ImplementationType.GetCustomAttributes(typeof(AuditingDecoratorAttribute)).Any()
+                );
+            container.RegisterDecorator(
+                    typeof(ICommandHandler<>),
+                    typeof(AuthorizationCommandHandlerDecorator<>),
+                    x => x.ImplementationType.GetCustomAttributes(typeof(AuthorizationDecoratorAttribute)).Any()
+                );
+            container.RegisterDecorator(
+                    typeof(ICommandHandler<>),
+                    typeof(ValidationCommandHandlerDecorator<>),
+                    x => x.ImplementationType.GetCustomAttributes(typeof(ValidationDecoratorAttribute)).Any()
+                );
+
+            container.Register(typeof(IQueryHandler<,>), ApplicationLayerAssemblies);
+            container.RegisterDecorator(
+                    typeof(IQueryHandler<,>),
+                    typeof(AuditingQueryHandlerDecorator<,>),
+                    x => x.ImplementationType.GetCustomAttributes(typeof(AuditingDecoratorAttribute)).Any()
+                );
+            container.RegisterDecorator(
+                    typeof(IQueryHandler<,>),
+                    typeof(AuthorizationQueryHandlerDecorator<,>),
+                    x => x.ImplementationType.GetCustomAttributes(typeof(AuthorizationDecoratorAttribute)).Any()
+                );
+            container.RegisterDecorator(
+                    typeof(IQueryHandler<,>),
+                    typeof(ValidationQueryHandlerDecorator<,>),
+                    x => x.ImplementationType.GetCustomAttributes(typeof(ValidationDecoratorAttribute)).Any()
+                );
+
+            return container;
         }
 
         public static IEnumerable<Type> GetCommandTypes() =>

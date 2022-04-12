@@ -1,4 +1,4 @@
-﻿using CoreModule.Application.Common;
+﻿using CoreModule.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace ManagementModule.Common

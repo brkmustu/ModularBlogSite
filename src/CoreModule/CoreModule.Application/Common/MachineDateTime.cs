@@ -1,4 +1,6 @@
-﻿namespace CoreModule.Application.Common;
+﻿using CoreModule.Application.Common.Interfaces;
+
+namespace CoreModule.Application.Common;
 
 public class MachineDateTime : IDateTime
 {

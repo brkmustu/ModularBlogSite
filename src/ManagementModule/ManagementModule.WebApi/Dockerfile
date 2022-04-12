@@ -8,16 +8,10 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["src/ManagementModule/ManagementModule.WebApi/ManagementModule.WebApi.csproj", "src/ManagementModule/ManagementModule.WebApi/"]
 COPY ["src/ManagementModule/ManagementModule.Persistence/ManagementModule.Persistence.csproj", "src/ManagementModule/ManagementModule.Persistence/"]
+COPY ["src/CoreModule/CoreModule.Persistence/CoreModule.Persistence.csproj", "src/CoreModule/CoreModule.Persistence/"]
+COPY ["src/CoreModule/CoreModule.Domain/CoreModule.Domain.csproj", "src/CoreModule/CoreModule.Domain/"]
 COPY ["src/ManagementModule/ManagementModule.Application/ManagementModule.Application.csproj", "src/ManagementModule/ManagementModule.Application/"]
 COPY ["src/CoreModule/CoreModule.Application/CoreModule.Application.csproj", "src/CoreModule/CoreModule.Application/"]
-COPY ["src/UserPortalModule/UserPortalModule.Domain/UserPortalModule.Domain.csproj", "src/UserPortalModule/UserPortalModule.Domain/"]
-COPY ["src/UserPortalModule/UserPortalModule.Domain.Shared/UserPortalModule.Domain.Shared.csproj", "src/UserPortalModule/UserPortalModule.Domain.Shared/"]
-COPY ["src/CoreModule/CoreModule.Domain/CoreModule.Domain.csproj", "src/CoreModule/CoreModule.Domain/"]
-COPY ["src/CoreModule/CoreModule/CoreModule.csproj", "src/CoreModule/CoreModule/"]
-COPY ["src/ManagementModule/ManagementModule.Application.Contracts/ManagementModule.Application.Contracts.csproj", "src/ManagementModule/ManagementModule.Application.Contracts/"]
-COPY ["src/ManagementModule/ManagementModule.Domain.Shared/ManagementModule.Domain.Shared.csproj", "src/ManagementModule/ManagementModule.Domain.Shared/"]
-COPY ["src/ManagementModule/ManagementModule.Domain/ManagementModule.Domain.csproj", "src/ManagementModule/ManagementModule.Domain/"]
-COPY ["src/ManagementModule/ManagementModule.Infrastructure/ManagementModule.Infrastructure.csproj", "src/ManagementModule/ManagementModule.Infrastructure/"]
 COPY ["src/CoreModule/CoreModule.Web/CoreModule.Web.csproj", "src/CoreModule/CoreModule.Web/"]
 RUN dotnet restore "src/ManagementModule/ManagementModule.WebApi/ManagementModule.WebApi.csproj"
 COPY . .

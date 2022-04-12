@@ -38,7 +38,8 @@ namespace ManagementModule
 
             services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.SectionName));
 
-            services.AddHttpContextAccessor();
+            services.AddHttpClient()
+                .AddHttpContextAccessor();
 
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 

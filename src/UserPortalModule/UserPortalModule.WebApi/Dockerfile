@@ -9,14 +9,10 @@ WORKDIR /src
 COPY ["src/UserPortalModule/UserPortalModule.WebApi/UserPortalModule.WebApi.csproj", "src/UserPortalModule/UserPortalModule.WebApi/"]
 COPY ["src/CoreModule/CoreModule.Web/CoreModule.Web.csproj", "src/CoreModule/CoreModule.Web/"]
 COPY ["src/CoreModule/CoreModule.Application/CoreModule.Application.csproj", "src/CoreModule/CoreModule.Application/"]
-COPY ["src/UserPortalModule/UserPortalModule.Domain/UserPortalModule.Domain.csproj", "src/UserPortalModule/UserPortalModule.Domain/"]
-COPY ["src/UserPortalModule/UserPortalModule.Domain.Shared/UserPortalModule.Domain.Shared.csproj", "src/UserPortalModule/UserPortalModule.Domain.Shared/"]
 COPY ["src/CoreModule/CoreModule.Domain/CoreModule.Domain.csproj", "src/CoreModule/CoreModule.Domain/"]
-COPY ["src/CoreModule/CoreModule/CoreModule.csproj", "src/CoreModule/CoreModule/"]
 COPY ["src/UserPortalModule/UserPortalModule.Persistence/UserPortalModule.Persistence.csproj", "src/UserPortalModule/UserPortalModule.Persistence/"]
 COPY ["src/UserPortalModule/UserPortalModule.Application/UserPortalModule.Application.csproj", "src/UserPortalModule/UserPortalModule.Application/"]
-COPY ["src/UserPortalModule/UserPortalModule.Application.Contracts/UserPortalModule.Application.Contracts.csproj", "src/UserPortalModule/UserPortalModule.Application.Contracts/"]
-COPY ["src/UserPortalModule/UserPortalModule.Infrastructure/UserPortalModule.Infrastructure.csproj", "src/UserPortalModule/UserPortalModule.Infrastructure/"]
+COPY ["src/CoreModule/CoreModule.Persistence/CoreModule.Persistence.csproj", "src/CoreModule/CoreModule.Persistence/"]
 RUN dotnet restore "src/UserPortalModule/UserPortalModule.WebApi/UserPortalModule.WebApi.csproj"
 COPY . .
 WORKDIR "/src/src/UserPortalModule/UserPortalModule.WebApi"

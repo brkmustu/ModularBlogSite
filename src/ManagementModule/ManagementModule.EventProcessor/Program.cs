@@ -10,6 +10,7 @@ Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((hostContext, services) =>
     {
+        services.AddHostedService<SyncManagementDbPermissionWorker>();
         services.AddHostedService<UserRegisteredEventWorker>();
         services.RegisterConfigurationServices(hostContext);
         services.RegisterQueueServices(hostContext);

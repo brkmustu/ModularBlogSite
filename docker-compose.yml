@@ -1,82 +1,101 @@
 version: '3.4'
 
 services:
+  publicapigateway.host:
+    image: ${DOCKER_REGISTRY-}publicapigatewayhost
+    build:
+      context: .
+      dockerfile: src/Gateways/PublicApiGateway.Host/Dockerfile
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+    networks:
+      - blogsite-network
+
   managementmodule.webapi:
     image: ${DOCKER_REGISTRY-}managementmodulewebapi
     build:
       context: .
       dockerfile: src/ManagementModule/ManagementModule.WebApi/Dockerfile
-    environment:
-      ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=my_password;CommandTimeout=300;
-      ASPNETCORE_ENVIRONMENT: Development
-      Serilog__WriteTo__Name: MongoDBBson
-      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
-      Serilog__WriteTo__0__Args__collectionName: ManagementServiceLogs
-      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
-      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
-    ports:
-      - "9090:80"
     depends_on:
       - "mongo"
       - "postgresql-master"
+      - "s_consul"
+      - "rabbitmq"
     networks:
-      - "modular-blog-network"
+      - blogsite-network
 
   userportalmodule.webapi:
     image: ${DOCKER_REGISTRY-}userportalmodulewebapi
     build:
       context: .
       dockerfile: src/UserPortalModule/UserPortalModule.WebApi/Dockerfile
-    environment:
-      ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalModuleDb;User Id=postgres;Password=my_password;CommandTimeout=300;
-      ASPNETCORE_ENVIRONMENT: Development
-      Serilog__WriteTo__Name: MongoDBBson
-      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
-      Serilog__WriteTo__0__Args__collectionName: UserPortalServiceLogs
-      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
-      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
-    ports:
-      - "9090:80"
     depends_on:
       - "mongo"
       - "postgresql-master"
-      - "managementmodule.webapi"
+      - "s_consul"
+      - "rabbitmq"
     networks:
-      - "modular-blog-network"
+      - blogsite-network
+
+  managementmodule.eventprocessor:
+    image: ${DOCKER_REGISTRY-}managementmoduleeventprocessor
+    build:
+      context: .
+      dockerfile: src/ManagementModule/ManagementModule.EventProcessor/Dockerfile
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+      - "rabbitmq"
+    networks:
+      - blogsite-network
+
+  userportalmodule.eventprocessor:
+    image: ${DOCKER_REGISTRY-}userportalmoduleeventprocessor
+    build:
+      context: .
+      dockerfile: src/UserPortalModule/UserPortalModule.EventProcessor/Dockerfile
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+      - "rabbitmq"
+    networks:
+      - blogsite-network
 
   postgresql-master:
     image: docker.io/bitnami/postgresql:14
-    ports:
-      - '5432:5432'
     volumes:
-      - 'db_volume:/bitnami/postgresql'
-    environment:
-      - POSTGRESQL_REPLICATION_MODE=master
-      - POSTGRESQL_REPLICATION_USER=repl_user
-      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
-      - POSTGRESQL_USERNAME=postgres
-      - POSTGRESQL_PASSWORD=my_password
-      - POSTGRESQL_DATABASE=ManagementModuleDb
-      - ALLOW_EMPTY_PASSWORD=yes
+      - 'vol_app_db:/bitnami/postgresql'
     networks:
-      - modular-blog-network
+      - blogsite-network
 
-  postgresql-slave:
-    image: docker.io/bitnami/postgresql:14
-    ports:
-      - '5432'
-    depends_on:
-      - postgresql-master
-    environment:
-      - POSTGRESQL_REPLICATION_MODE=slave
-      - POSTGRESQL_REPLICATION_USER=repl_user
-      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
-      - POSTGRESQL_MASTER_HOST=postgresql-master
-      - POSTGRESQL_PASSWORD=my_password
-      - POSTGRESQL_MASTER_PORT_NUMBER=5432
-      - ALLOW_EMPTY_PASSWORD=yes
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    volumes:
+      - 'vol_pgadmin:/var/lib/pgadmin'
+    restart: unless-stopped
     networks:
-      - modular-blog-network
+      - blogsite-network
+
+  s_consul:
+    container_name: c_consul
+    image: consul
+    networks:
+      - blogsite-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    environment:
+      - RABBITMQ_DEFAULT_VHOST=mbs
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123456
+    volumes:
+        - vol_rabbitmq_data:/var/lib/rabbitmq/
+        - vol_rabbitmq_log:/var/log/rabbitmq
+    networks:
+      - blogsite-network
 
   mongo:
     image: mongo
@@ -84,7 +103,7 @@ services:
     ports:
       - 27017:27017
     networks:
-      - modular-blog-network
+      - blogsite-network
 
   mongoexpress:
     image: mongo-express
@@ -94,27 +113,14 @@ services:
     environment:
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
     networks:
-      - modular-blog-network
-
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - 'pgadmin:/var/lib/pgadmin'
-    ports:
-      - '${PGADMIN_PORT:-5050}:80'
-    restart: unless-stopped
-    networks:
-      - modular-blog-network
+      - blogsite-network
 
 volumes:
-  db_volume:
-  pgadmin:
+  vol_rabbitmq_data:
+  vol_rabbitmq_log:
+  vol_app_db:
+  vol_pgadmin:
 
 networks:
-  modular-blog-network:
+  blogsite-network:
     driver: bridge

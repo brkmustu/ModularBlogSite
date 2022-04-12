@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CoreModule.Application.Common.Contracts;
 using CoreModule.Application.Common.Interfaces;
+using CoreModule.Application.CrossCuttingConcerns;
 using ManagementModule.Common;
+using ManagementModule.Common.Contracts;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -17,16 +19,11 @@ public class UserActivationStatusCommand : CommandRequest
     public bool IsActive { get; set; }
 
     [JsonIgnore]
-    public override CrossCuttingConcerns[] ApplicableConcerns => new[] 
-    {
-        CrossCuttingConcerns.Auditing,
-        CrossCuttingConcerns.Authorization,
-        CrossCuttingConcerns.Validation
-    };
-
-    [JsonIgnore]
     public override string OperationName => "UserActivationStatusCommand";
 
+    [ValidationDecorator]
+    [AuditingDecorator]
+    [AuthorizationDecorator]
     public class Handler : ManagementModuleApplicationService, ICommandHandler<UserActivationStatusCommand>
     {
         public Handler(IManagementModuleDbContext dbContext, IMapper mapper) : base(dbContext, mapper)

@@ -3,7 +3,7 @@ using CoreModule.Domain.Roles;
 using CoreModule.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoreModule.Application.Common;
+namespace CoreModule.Application.Common.Interfaces;
 
 public interface ICoreModuleDbContext
 {

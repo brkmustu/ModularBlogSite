@@ -7,7 +7,7 @@ using System.Text.Json;
 namespace CoreModule.Application.Auditing;
 
 public class AuditingQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQuery, TResult>
-    where TQuery : QueryRequest<TResult>
+    where TQuery : BaseQueryRequest<TResult>
 {
     private readonly ILogger<AuditLogInfo> _logger;
     private readonly ICurrentUserService _currentUserService;
@@ -22,9 +22,6 @@ public class AuditingQueryHandlerDecorator<TQuery, TResult> : IQueryHandler<TQue
 
     public async Task<TResult> Handle(TQuery query)
     {
-        if (!query.ApplicableConcerns.Contains(CrossCuttingConcerns.Auditing))
-            return await _decorate.Handle(query);
-
         var result = default(TResult);
         var auditLog = new AuditLogInfo();
         auditLog.ApplicationName = nameof(TQuery);

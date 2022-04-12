@@ -1,4 +1,5 @@
 ﻿using Consul;
+using CoreModule;
 
 public static class ConsulBootstrapper
 {
@@ -6,7 +7,7 @@ public static class ConsulBootstrapper
     {
         services.AddSingleton<IConsulClient, ConsulClient>(x => new ConsulClient(consulConfig =>
         {
-            var address = configuration["ConsulConfig:Address"];
+            var address = CommonSettings.GetConsulAddress(configuration);
             consulConfig.Address = new Uri(address);
         }));
 
@@ -21,7 +22,10 @@ public static class ConsulBootstrapper
 
         var logger = loggingFactory.CreateLogger<IApplicationBuilder>();
 
-        var address = urls.First();
+        var serviceName = CommonSettings.GetEnvironmentServiceName();
+        var servicePort = CommonSettings.GetEnvironmentServicePort();
+
+        var address = serviceName.IsNullOrEmpty() ? urls.First() : "http://" + serviceName + ":" + servicePort;
 
         var uri = new Uri(address);
         var registration = new AgentServiceRegistration
@@ -48,7 +52,10 @@ public static class ConsulBootstrapper
 
         var logger = loggingFactory.CreateLogger<IApplicationBuilder>();
 
-        var address = urls.First();
+        var serviceName = CommonSettings.GetEnvironmentServiceName();
+        var servicePort = CommonSettings.GetEnvironmentServicePort();
+
+        var address = serviceName.IsNullOrEmpty() ? urls.First() : "http://" + serviceName + ":" + servicePort;
 
         var uri = new Uri(address);
         var registration = new AgentServiceRegistration

@@ -1,4 +1,5 @@
 ﻿using CoreModule.Application.Common;
+using CoreModule.Application.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

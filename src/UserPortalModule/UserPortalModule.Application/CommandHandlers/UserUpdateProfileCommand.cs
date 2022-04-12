@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using CoreModule.Application.Common.Contracts;
 using CoreModule.Application.Common.Interfaces;
+using CoreModule.Application.CrossCuttingConcerns;
 using CoreModule.Domain.Users;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using UserPortalModule.Common;
+using UserPortalModule.Common.Contracts;
 
 namespace UserPortalModule.CommandHandlers;
 
@@ -36,16 +38,11 @@ public class UserUpdateProfileCommand : CommandRequest
     public long[] RoleIds { get; set; }
 
     [JsonIgnore]
-    public override CrossCuttingConcerns[] ApplicableConcerns => new[]
-    {
-        CrossCuttingConcerns.Auditing,
-        CrossCuttingConcerns.Authorization,
-        CrossCuttingConcerns.Validation
-    };
-
-    [JsonIgnore]
     public override string OperationName => "UserUpdateProfileCommand";
 
+    [AuditingDecorator]
+    [AuthorizationDecorator]
+    [ValidationDecorator]
     public class Handler : UserPortalModuleApplicationService, ICommandHandler<UserUpdateProfileCommand>
     {
         public Handler(IUserPortalModuleDbContext dbContext, IMapper mapper) : base(dbContext, mapper)

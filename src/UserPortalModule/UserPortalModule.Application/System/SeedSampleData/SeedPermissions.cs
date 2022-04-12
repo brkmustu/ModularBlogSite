@@ -1,6 +1,5 @@
 ﻿using UserPortalModule.Common;
 using CoreModule.Domain.Permissions;
-using System.Diagnostics.CodeAnalysis;
 using UserPortalModule.System.Permissions;
 
 namespace UserPortalModule.System.SeedSampleData;
@@ -16,17 +15,18 @@ public class SeedPermissions
 
     public async Task<List<long>> SyncAllAsync()
     {
-        var allNewPermissions = PermissionExtensions.GetSystemPermissions();
+        var allNewPermissions = PermissionExtensions.GetAuthSystemPermissions();
 
         var permissions = _dbContext.Permissions.ToList();
 
         if (permissions is null || permissions.Count == 0)
         {
+
             _dbContext.Permissions.AddRange(allNewPermissions);
         }
         else
         {
-            var diffPermissions = permissions.Except(allNewPermissions, new PermissionEqualityComparer());
+            var diffPermissions = permissions.Except(allNewPermissions, new PermissionNameComparer());
             if (diffPermissions.Any())
             {
                 _dbContext.Permissions.AddRange(diffPermissions);
@@ -47,17 +47,3 @@ public class SeedPermissions
         return permissionIds;
     }
 }
-
-public class PermissionEqualityComparer : IEqualityComparer<Permission>
-{
-    public bool Equals(Permission? x, Permission? y)
-    {
-        return x.Name == y.Name;
-    }
-
-    public int GetHashCode([DisallowNull] Permission obj)
-    {
-        return obj.Name.GetHashCode();
-    }
-}
-

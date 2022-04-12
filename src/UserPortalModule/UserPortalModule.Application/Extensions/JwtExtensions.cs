@@ -5,13 +5,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace CoreModule.Application.Extensions;
+namespace UserPortalModule;
 
 public static class JwtExtensions
 {
     public static AccessToken CreateToken(
-            this User user, 
-            IEnumerable<string> permissions, 
+            this User user,
+            IEnumerable<string> permissions,
             TokenOptions tokenOptions
         )
     {
@@ -30,9 +30,9 @@ public static class JwtExtensions
     }
 
     internal static JwtSecurityToken CreateJwtSecurityToken(
-            TokenOptions tokenOptions, 
+            TokenOptions tokenOptions,
             User user,
-            SigningCredentials signingCredentials, 
+            SigningCredentials signingCredentials,
             IEnumerable<string> permissions,
             DateTime accessTokenExpiration
         )

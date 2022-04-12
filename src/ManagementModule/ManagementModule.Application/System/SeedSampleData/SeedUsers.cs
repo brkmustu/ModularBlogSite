@@ -1,4 +1,4 @@
-﻿using CoreModule.Application.Extensions.Hashing;
+﻿using CoreModule.Application.SeedSampleData;
 using CoreModule.Domain.Users;
 using ManagementModule.Common;
 
@@ -6,7 +6,6 @@ namespace ManagementModule.System.SeedSampleData
 {
     public class SeedUsers
     {
-        private const string AdminPassword = "123qaz!";
         private readonly IManagementModuleDbContext _dbContext;
 
         public SeedUsers(IManagementModuleDbContext dbContext)
@@ -20,17 +19,7 @@ namespace ManagementModule.System.SeedSampleData
 
             if (adminUser is null)
             {
-                User admin = new User("admin", "admin", "admin", "admin@management.com");
-
-                var encryptedPassword = AdminPassword.CreatePasswordHash();
-
-                admin.SetPasswordHash(encryptedPassword.PasswordHash);
-                admin.SetPasswordSalt(encryptedPassword.PasswordSalt);
-
-                admin.Id = Guid.NewGuid();
-
-                admin.SetUserStatus(UserStatusType.Active);
-                admin.Activate();
+                User admin = SeedingConsts.AdminUser();
 
                 if (adminRoleId > 0)
                 {

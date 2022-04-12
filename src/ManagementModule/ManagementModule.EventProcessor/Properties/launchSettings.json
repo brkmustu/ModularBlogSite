@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ManagementModule.EventProcessor": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

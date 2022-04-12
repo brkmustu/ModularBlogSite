@@ -2,8 +2,10 @@
 using CoreModule.Application.Common.Contracts;
 using CoreModule.Application.Common.Interfaces;
 using CoreModule.Application.Common.MessageContracts;
+using CoreModule.Application.CrossCuttingConcerns;
 using CoreModule.Domain.Users;
 using ManagementModule.Common;
+using ManagementModule.Common.Contracts;
 using MassTransit;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
@@ -21,16 +23,11 @@ public class UserChangeStatusCommand : CommandRequest
     public bool IsApproved { get; set; }
 
     [JsonIgnore]
-    public override CrossCuttingConcerns[] ApplicableConcerns => new[]
-{
-        CrossCuttingConcerns.Auditing,
-        CrossCuttingConcerns.Authorization,
-        CrossCuttingConcerns.Validation
-    };
-
-    [JsonIgnore]
     public override string OperationName => "UserChangeStatusCommand";
 
+    [ValidationDecorator]
+    [AuditingDecorator]
+    [AuthorizationDecorator]
     public class Handler : ManagementModuleApplicationService, ICommandHandler<UserChangeStatusCommand>
     {
         public Handler(

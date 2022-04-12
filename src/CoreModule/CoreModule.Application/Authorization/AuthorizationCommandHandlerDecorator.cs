@@ -5,7 +5,7 @@ using System.Security;
 namespace CoreModule.Application.Authorization;
 
 public class AuthorizationCommandHandlerDecorator<TCommand> : ICommandHandler<TCommand>
-    where TCommand : CommandRequest
+    where TCommand : BaseCommandRequest
 {
     private readonly ICommandHandler<TCommand> decoratedHandler;
     private readonly ICurrentUserService currentUser;
@@ -25,8 +25,7 @@ public class AuthorizationCommandHandlerDecorator<TCommand> : ICommandHandler<TC
 
     private void Authorize(TCommand command)
     {
-        if (command.ApplicableConcerns.Contains(CrossCuttingConcerns.Authorization) 
-            && !this.currentUser.IsInRole(command.OperationName))
+        if (!this.currentUser.IsInRole(command.GetPermissionName()))
         {
             throw new SecurityException();
         }

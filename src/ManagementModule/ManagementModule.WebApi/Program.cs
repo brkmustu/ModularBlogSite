@@ -6,12 +6,23 @@ using Microsoft.OpenApi.Models;
 using CoreModule.Web.Codes;
 using SimpleInjector;
 using Serilog;
+using Microsoft.AspNetCore.Authentication;
+using CoreModule.Web;
+using CoreModule.Application;
+using CoreModule.Application.Common.MessageContracts;
+using MassTransit;
+using ManagementModule.System.Permissions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((ctx, lc) => { lc.ReadFrom.Configuration(ctx.Configuration); });
 
 var services = builder.Services;
+
+services.AddAuthentication(AppConsts.DefaultAuthenticationSchemeName)
+     .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>(AppConsts.DefaultAuthenticationSchemeName, null);
+
+services.AddAuthorization();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // Open http://localhost:5132/swagger/ to browse the API.
@@ -48,6 +59,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+
+app.UseAuthorization();
+
 using (var scope = app.Services.CreateScope())
 {
     var scopedServices = scope.ServiceProvider;
@@ -77,6 +92,15 @@ app.MapQueries(
 app.Lifetime.ApplicationStarted.Register(() =>
 {
     app.RegisterWithConsule(app.Urls);
+    using (var scope = app.Services.CreateScope())
+    {
+        var serviceProvider = scope.ServiceProvider;
+        var publishEndpoint = serviceProvider.GetService<IPublishEndpoint>();
+        publishEndpoint.Publish<SyncUserPortalPermissionsEvent>(new
+        {
+            Permissions = PermissionExtensions.GetAuthSystemPermissions().Select(x => x.Name).ToList(),
+        }).GetAwaiter().GetResult();
+    }
 });
 
 app.Lifetime.ApplicationStopped.Register(() =>

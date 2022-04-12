@@ -19,13 +19,13 @@ public class SeedRoles
     /// <returns></returns>
     public async Task<long> SyncAdminRole(IEnumerable<long> permissionIds)
     {
-        var adminRole = _dbContext.Roles.Where(x => x.Name == "PortalAdmin").FirstOrDefault();
+        var adminRole = _dbContext.Roles.Where(x => x.Name == "Admin").FirstOrDefault();
 
         long adminRoleId = 0;
 
         if (adminRole is null)
         {
-            var newAdminRole = new Role { Name = "PortalAdmin", Description = "Portal uygulaması için oluşturulan admin rolü tanımıdır. Portal modülünde tam yetkiye sahip olacaktır." };
+            var newAdminRole = new Role { Name = "Admin", Description = "Portal uygulaması için oluşturulan admin rolü tanımıdır. Portal modülünde tam yetkiye sahip olacaktır." };
 
             newAdminRole.PermissionIds = permissionIds.ToArray();
 
@@ -44,7 +44,7 @@ public class SeedRoles
             }
             else
             {
-                var savedAdminRole = _dbContext.Roles.Where(x => x.Name == "PortalAdmin").FirstOrDefault();
+                var savedAdminRole = _dbContext.Roles.Where(x => x.Name == "Admin").FirstOrDefault();
             }
         }
         else

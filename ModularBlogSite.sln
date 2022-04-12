@@ -61,9 +61,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreModule.Persistence", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gateways", "gateways", "{51AC3DC7-26DB-4C39-98D8-F51EB4E1922D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicApiGateway.Host", "src\Gateways\PublicApiGateway.Host\PublicApiGateway.Host.csproj", "{57E22A67-E3D8-480A-9A6D-B6C278455A98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicApiGateway.Host", "src\Gateways\PublicApiGateway.Host\PublicApiGateway.Host.csproj", "{57E22A67-E3D8-480A-9A6D-B6C278455A98}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "microservices", "microservices", "{2FBF5BA9-1301-44D1-B817-F0D07101F16F}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{65A856E4-CC11-42D1-90A1-DCCBB5051A8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +137,10 @@ Global
 		{57E22A67-E3D8-480A-9A6D-B6C278455A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57E22A67-E3D8-480A-9A6D-B6C278455A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57E22A67-E3D8-480A-9A6D-B6C278455A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65A856E4-CC11-42D1-90A1-DCCBB5051A8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65A856E4-CC11-42D1-90A1-DCCBB5051A8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65A856E4-CC11-42D1-90A1-DCCBB5051A8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65A856E4-CC11-42D1-90A1-DCCBB5051A8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

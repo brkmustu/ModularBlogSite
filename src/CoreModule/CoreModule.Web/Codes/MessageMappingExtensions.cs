@@ -32,6 +32,9 @@ public static class MessageMappingExtensions
     {
         var mapping = pattern.BuildMapping(messageType, returnType);
 
-        app.MapMethods(mapping.Pattern, mapping.HttpMethods, mapping.Handler);
+        if (!mapping.Pattern.IsNullOrEmpty())
+        {
+            app.MapMethods(mapping.Pattern, mapping.HttpMethods, mapping.Handler);
+        }
     }
 }

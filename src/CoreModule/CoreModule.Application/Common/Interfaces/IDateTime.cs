@@ -1,4 +1,4 @@
-﻿namespace CoreModule.Application.Common;
+﻿namespace CoreModule.Application.Common.Interfaces;
 
 public interface IDateTime
 {

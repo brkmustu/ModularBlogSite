@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:48330",
-      "sslPort": 44372
+      "applicationUrl": "http://localhost:5000",
+      "sslPort": 7000
     }
   },
   "profiles": {
@@ -29,7 +29,9 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "publishAllPorts": true,
-      "useSSL": true
+      "httpPort": 5000,
+      "useSSL": true,
+      "sslPort": 7000
     }
   }
 }

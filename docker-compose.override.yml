@@ -5,6 +5,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=1qrG5!l19KrTav2
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/dev_cert.pfx
+      - GlobalConfiguration__BaseUrl=https://localhost:7000
       - GlobalConfiguration__ServiceDiscoveryProvider__Host=s_consul
       - GlobalConfiguration__ServiceDiscoveryProvider__Port=8500
       - GlobalConfiguration__ServiceDiscoveryProvider__Type=Consul
@@ -13,7 +16,7 @@ services:
       - "7000:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ./conf.d/https/:/https/
 
   managementmodule.webapi:
     environment:
@@ -22,16 +25,11 @@ services:
       ServiceName: managementmodule.webapi
       ServicePort: 5010
       ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      ConsulConfig__Address: http://s_consul:8500
-      RabbitMqOptions__HostName: rabbitmq
-      RabbitMqOptions__VirtualHost: mbs
-      RabbitMqOptions__UserName: admin
-      RabbitMqOptions__Password: 123456
-      Serilog__WriteTo__Name: MongoDBBson
-      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
       Serilog__WriteTo__0__Args__collectionName: ManagementServiceLogs
-      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
-      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    env_file:
+      - env.files/from.consul.env
+      - env.files/from.mongodb.env
+      - env.files/from.rabbitmq.env
     ports:
       - "5010:80"
 
@@ -42,53 +40,67 @@ services:
       ServiceName: userportalmodule.webapi
       ServicePort: 5020
       ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      ConsulConfig__Address: http://s_consul:8500
-      RabbitMqOptions__HostName: rabbitmq
-      RabbitMqOptions__VirtualHost: mbs
-      RabbitMqOptions__UserName: admin
-      RabbitMqOptions__Password: 123456
-      Serilog__WriteTo__Name: MongoDBBson
-      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
       Serilog__WriteTo__0__Args__collectionName: UserPortalServiceLogs
-      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
-      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    env_file:
+      - env.files/from.consul.env
+      - env.files/from.mongodb.env
+      - env.files/from.rabbitmq.env
     ports:
       - "5020:80"
 
   managementmodule.eventprocessor:
     environment:
       ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      RabbitMqOptions__HostName: rabbitmq
-      RabbitMqOptions__VirtualHost: mbs
-      RabbitMqOptions__UserName: admin
-      RabbitMqOptions__Password: 123456
-      Serilog__WriteTo__Name: MongoDBBson
-      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
       Serilog__WriteTo__0__Args__collectionName: ManagementEventLogs
-      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
-      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    env_file:
+      - env.files/from.mongodb.env
+      - env.files/from.rabbitmq.env
 
   userportalmodule.eventprocessor:
     environment:
       ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      RabbitMqOptions__HostName: rabbitmq
-      RabbitMqOptions__VirtualHost: mbs
-      RabbitMqOptions__UserName: admin
-      RabbitMqOptions__Password: 123456
-      Serilog__WriteTo__Name: MongoDBBson
-      Serilog__WriteTo__0__Args__databaseUrl: mongodb://mongo:27017/logs
       Serilog__WriteTo__0__Args__collectionName: UserPortalEventLogs
-      Serilog__WriteTo__0__Args__cappedMaxSizeMb: 500
-      Serilog__WriteTo__0__Args__cappedMaxDocuments: 1000
+    env_file:
+      - env.files/from.mongodb.env
+      - env.files/from.rabbitmq.env
       
   postgresql-master:
-    environment:
-      - POSTGRESQL_USERNAME=postgres
-      - POSTGRESQL_PASSWORD=postgres
-      - POSTGRESQL_DATABASE=postgres
-      - ALLOW_EMPTY_PASSWORD=yes
+    env_file:
+      - env.files/postgresql-master.env
     ports:
       - '5432:5432'
+
+  postgresql-slave-1:
+    env_file:
+      - env.files/postgresql-slave.env
+    ports:
+      - '5432'
+    depends_on:
+      - postgresql-master
+
+  postgresql-slave-2:
+    env_file:
+      - env.files/postgresql-slave.env
+    ports:
+      - '5432'
+    depends_on:
+      - postgresql-master
+
+  postgresql-slave-3:
+    env_file:
+      - env.files/postgresql-slave.env
+    ports:
+      - '5432'
+    depends_on:
+      - postgresql-master
+
+  postgresql-slave-4:
+    env_file:
+      - env.files/postgresql-slave.env
+    ports:
+      - '5432'
+    depends_on:
+      - postgresql-master
 
   pgadmin:
     environment:

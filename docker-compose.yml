@@ -65,7 +65,35 @@ services:
   postgresql-master:
     image: docker.io/bitnami/postgresql:14
     volumes:
-      - 'vol_app_db:/bitnami/postgresql'
+      - 'vol_app_master_db:/bitnami/postgresql'
+    networks:
+      - blogsite-network
+
+  postgresql-slave-1:
+    image: docker.io/bitnami/postgresql:14
+    volumes:
+      - 'vol_app_slave_1_db:/bitnami/postgresql'
+    networks:
+      - blogsite-network
+
+  postgresql-slave-2:
+    image: docker.io/bitnami/postgresql:14
+    volumes:
+      - 'vol_app_slave_2_db:/bitnami/postgresql'
+    networks:
+      - blogsite-network
+
+  postgresql-slave-3:
+    image: docker.io/bitnami/postgresql:14
+    volumes:
+      - 'vol_app_slave_3_db:/bitnami/postgresql'
+    networks:
+      - blogsite-network
+
+  postgresql-slave-4:
+    image: docker.io/bitnami/postgresql:14
+    volumes:
+      - 'vol_app_slave_4_db:/bitnami/postgresql'
     networks:
       - blogsite-network
 
@@ -118,7 +146,11 @@ services:
 volumes:
   vol_rabbitmq_data:
   vol_rabbitmq_log:
-  vol_app_db:
+  vol_app_master_db:
+  vol_app_slave_1_db:
+  vol_app_slave_2_db:
+  vol_app_slave_3_db:
+  vol_app_slave_4_db:
   vol_pgadmin:
 
 networks:

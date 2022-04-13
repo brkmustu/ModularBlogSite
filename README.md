@@ -1,39 +1,47 @@
-ModularBlogSite
+ï»¿ModularBlogSite
 
-Öncelikler herkese merhabalar.
+Ã–ncelikler herkese merhabalar.
 
-Bu uygulama aslında bir anlamda da kendi geliştirdiğim (henüz emekleme aşamasında olsada :)) bir şablon mimarisi üzerine kurulmuştur;
-https://github.com/brkmustu/ModularTemplate
+Bu uygulama aslÄ±nda bir anlamda da kendi geliÅŸtirdiÄŸim (henÃ¼z emekleme aÅŸamasÄ±nda olsada :)) bir ÅŸablon mimarisi Ã¼zerine kurulmuÅŸtur; https://github.com/brkmustu/ModularTemplate
 
-Bu uygulama ile en basit haliyle kullanıcı kayıt ve yönetim için temel özellikleri barındıran bir kullanıcı üyelik yönetim sistemi amaçlanmıştır.
+Bu uygulama ile en basit haliyle kullanÄ±cÄ± kayÄ±t ve yÃ¶netim iÃ§in temel Ã¶zellikleri barÄ±ndÄ±ran bir kullanÄ±cÄ± Ã¼yelik yÃ¶netim sistemi amaÃ§lanmÄ±ÅŸtÄ±r.
 
-Uygulamadaki asıl amaç mikroservis mimarisi ile bu kurguyu yakalamaya çalışmaktır. Bu benim ilk örneğim olduğu için bir çok yerde kullanılmaması gereken şeyler kullanmış olabilirim :).
-Yine de elimden geldiğince güzel bir yapı kurgulamaya çalıştım.
+Uygulamadaki asÄ±l amaÃ§ mikroservis mimarisi ile bu kurguyu yakalamaya Ã§alÄ±ÅŸmaktÄ±r. Bu benim ilk Ã¶rneÄŸim olduÄŸu iÃ§in bir Ã§ok yerde kullanÄ±lmamasÄ± gereken ÅŸeyler kullanmÄ±ÅŸ olabilirim :). Yine de elimden geldiÄŸince gÃ¼zel bir yapÄ± kurgulamaya Ã§alÄ±ÅŸtÄ±m.
 
-Uygulamanın ön planında bir apigateway bulunmaktadır.
+UygulamanÄ±n Ã¶n planÄ±nda bir apigateway bulunmaktadÄ±r. Åimdilik docker Ã¼zerinde Ã§alÄ±ÅŸtÄ±ramadÄ±m, ilk fÄ±rsatta bununla da ilgileneceÄŸim.
 
-Arkada iki adet mikroservis bulunuyor. Biri "Management", diğeri "UserPortal" olmak üzere.
+Arkada iki adet mikroservis bulunuyor. Biri **"Management"**, diÄŸeri **"UserPortal"** olmak Ã¼zere.
 
-"Management" mikroservisi şu 3 temel apiyi hedef almaktadır;
+**"Management"** mikroservisi ÅŸu 3 temel apiyi hedef almaktadÄ±r;
 
-	- UserActivationStatusCommand => kullanıcıyı aktife yada pasife çekmeye yardımcı olur (kullanıcı üstündeki aktif pasif bilgisini günceller)
-	- UserChangeStatusCommand => kullanıcının statu bilgisini güncellemeye yardımcı olur (statü bilgisi aktiflikten daha detaylı bir bilgidir. onay bekliyor, reddedildi vs)
-	- GetUserListQuery => kullanıcı listesini çekmek için kullanılacak olan api servisidir, paging yapısı mevcuttur.
+- **"UserActivationStatusCommand"** => kullanÄ±cÄ±yÄ± aktife yada pasife Ã§ekmeye yardÄ±mcÄ± olur (kullanÄ±cÄ± Ã¼stÃ¼ndeki aktif pasif bilgisini gÃ¼nceller)
+- **"UserChangeStatusCommand"** => kullanÄ±cÄ±nÄ±n statu bilgisini gÃ¼ncellemeye yardÄ±mcÄ± olur (statÃ¼ bilgisi aktiflikten daha detaylÄ± bir bilgidir. onay bekliyor, reddedildi vs)
+- **"GetUserListQuery"** => kullanÄ±cÄ± listesini Ã§ekmek iÃ§in kullanÄ±lacak olan api servisidir, paging yapÄ±sÄ± mevcuttur.
 
-"UserPortal" mikroservisi şu 3 temel apiyi hedef almaktadır;
+Bu uygulamayÄ± lokalinizde ayaÄŸa kaldÄ±rdÄ±ktan sonra "http://localhost:5010/swagger/index.html" adresi Ã¼zerinden ilgili servislere eriÅŸebilirsiniz.
 
-	- UserRegistrationCommand => kullanıcı kayıt işlemleri için bu apiyi kullanabilirsiniz,
-	- UserUpdateProfileCommand => kullanıcı güncelleme işlemleri için bu api hazırlanmıştır,
-	- UserLoginQuery => login işlemi için bu api hazırlanmıştır.
+**"UserPortal"** mikroservisi ÅŸu 3 temel apiyi hedef almaktadÄ±r;
 
-Uygulamada Jwt token bazlı authentication yapısı kurulmuştur. Herhangi bir serviste yetki gerektiren bir api'ye istek atabilmek için,
-öncelikle "UserPortal" mikroservisi altındaki "UserLoginQuery" apisi yardımı ile token almak gerekmektedir. Bearer token scheması kullanılmıştır.
+- **"UserRegistrationCommand"** => kullanÄ±cÄ± kayÄ±t iÅŸlemleri iÃ§in bu apiyi kullanabilirsiniz,
+- **"UserUpdateProfileCommand"** => kullanÄ±cÄ± gÃ¼ncelleme iÅŸlemleri iÃ§in bu api hazÄ±rlanmÄ±ÅŸtÄ±r,
+- **"UserLoginQuery"** => login iÅŸlemi iÃ§in bu api hazÄ±rlanmÄ±ÅŸtÄ±r.
 
-Uygulamada hali hazırda swagger entegrasyonu mevcuttur ve uygulama docker compose ile lokalinizde ayağa kaldırabileceğiniz vaziyette olduğundan,
-swagger üzerinden ilgili api servislerine ve modellerine erişebilirsiniz.
+Bu uygulamayÄ± lokalinizde ayaÄŸa kaldÄ±rdÄ±ktan sonra "http://localhost:5020/swagger/index.html" adresi Ã¼zerinden ilgili servislere eriÅŸebilirsiniz.
 
-Uygulama için örnek flow aşağıdaki gibidir;
+Uygulamada Jwt token bazlÄ± authentication yapÄ±sÄ± kurulmuÅŸtur. Herhangi bir serviste yetki gerektiren bir api'ye istek atabilmek iÃ§in, Ã¶ncelikle "UserPortal" mikroservisi altÄ±ndaki "UserLoginQuery" apisi yardÄ±mÄ± ile token almak gerekmektedir. Bearer token schemasÄ± kullanÄ±lmÄ±ÅŸtÄ±r.
 
-https://github.com/brkmustu/ModularBlogSite/blob/master/sample_flow.png
+ApiGateway'i ÅŸimdilik docker Ã¼zerinde stabil Ã§alÄ±ÅŸÄ±r hale getiremediÄŸimden, lokalde Ã§alÄ±ÅŸÄ±rken direkt servislerin kendi swagger UI'larÄ±nÄ± kullanarak Ã§alÄ±ÅŸtÄ±rabilirsiniz. Tabi projeyi kendi lokalinizde ayaÄŸa kaldÄ±rmanÄ±zÄ± kolaylaÅŸtÄ±rabilmek iÃ§in powershell dosyalarÄ±da ekledim. Bunlar;
 
-Şimdilik bu kadar :)
+- **"docker-compose-up.ps1"** => uygulamayÄ± lokalinizde ayaÄŸa kaldÄ±rmanÄ±za yardÄ±mcÄ± olur ve tekraren Ã§alÄ±ÅŸtÄ±rdÄ±ÄŸÄ±nÄ±zda mevcut image'leri kullanÄ±r.
+- **"docker-compose-up-force-recreate.ps1"** >= uygulama Ã¼zerinde eÄŸer bir geliÅŸtirme yaptÄ±ysanÄ±z, mevcut projelerin image'larÄ±nÄ± tekrar oluÅŸturmaya zorlar (aslÄ±nda bu daha Ã§ok uygulamayÄ± geliÅŸtirenlere yardÄ±mcÄ± olacak bir script).
+- **"docker-compose-down.ps1"** => uygulamayÄ± kendi lokalinizde denedikten sonra lokalinizden kaldÄ±rmak isterseniz bu powershell script'ini kullanabilirsiniz.
+
+Uygulamada hali hazÄ±rda swagger entegrasyonu mevcuttur ve uygulama docker compose ile lokalinizde ayaÄŸa kaldÄ±rabileceÄŸiniz vaziyette olduÄŸundan, swagger Ã¼zerinden ilgili api servislerine ve modellerine eriÅŸebilirsiniz.
+
+UygulamayÄ± ayaÄŸa kaldÄ±rdÄ±ÄŸÄ±nÄ±zda kendisi otomatik olarak database'lerini oluÅŸturup, yetki tanÄ±mlarÄ±nÄ± database'lerine aktarabilmektedir. Tabi birde uygulama iÃ§in **"admin"** kullanÄ±cÄ±sÄ± varsayÄ±lan olarak db'lere eklenmektedir. **"admin"** kullanÄ±cÄ±sÄ±nÄ±n ÅŸifresi : **"1qaz!2wsx"** olarak ayarlanmÄ±ÅŸtÄ±r. bu ÅŸekilde token alÄ±nÄ±p, denemeler yapÄ±labilir.
+
+Uygulama iÃ§in Ã¶rnek flow aÅŸaÄŸÄ±daki gibidir;
+
+![Ã–rnek Flow!](https://github.com/brkmustu/ModularBlogSite/blob/master/sample_flow.png "Ã–rnek Flow")
+
+Åimdilik bu kadar :)

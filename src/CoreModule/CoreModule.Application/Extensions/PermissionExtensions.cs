@@ -1,29 +1,12 @@
 ﻿using CoreModule.Application.Common.Interfaces;
 using CoreModule.Application.CrossCuttingConcerns;
 using CoreModule.Domain.Permissions;
-using Newtonsoft.Json;
 using System.Reflection;
 
 namespace CoreModule.Application.Extensions;
 
 public static class PermissionExtensions
 {
-    public static async Task<List<Permission>> GetAuthSystemPermissionsAsync(string moduleName)
-    {
-        HttpClient client = new HttpClient();
-
-        var apiUrl = CommonSettings.GetApiGatewayUrl() + moduleName + "/GetAuthSystemPermissionsAsync";
-
-        var response = await client.GetAsync(apiUrl);
-
-        if (response.StatusCode == System.Net.HttpStatusCode.OK)
-        {
-            var result = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Permission>>(result);
-        }
-        return null;
-    }
-
     public static List<Permission> GetAuthSystemPermissions(Assembly[] assemblies, string moduleName)
     {
         List<Type> handlerTypes = assemblies.SelectMany(x => x.GetTypes())

@@ -16,6 +16,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IDateTime, MachineDateTime>();
 
+        services.AddSingleton<IAppGuid, AppGuid>();
+
         return services;
     }
 }

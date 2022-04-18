@@ -7,59 +7,121 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=1qrG5!l19KrTav2
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/dev_cert.pfx
-      - GlobalConfiguration__BaseUrl=https://localhost:7000
+      - Serilog__WriteTo__0__Args__collectionName=ApiGatewayLogs
       - GlobalConfiguration__ServiceDiscoveryProvider__Host=s_consul
-      - GlobalConfiguration__ServiceDiscoveryProvider__Port=8500
-      - GlobalConfiguration__ServiceDiscoveryProvider__Type=Consul
+      - Routes__0__DownstreamHostAndPorts__0__Host=managementmodule.replica1.webapi
+      - Routes__0__DownstreamHostAndPorts__0__Port=5010
+      - Routes__0__DownstreamHostAndPorts__1__Host=managementmodule.replica2.webapi
+      - Routes__0__DownstreamHostAndPorts__1__Port=5011
+      - Routes__1__DownstreamHostAndPorts__0__Host=userportalmodule.replica1.webapi
+      - Routes__1__DownstreamHostAndPorts__0__Port=5020
+      - Routes__1__DownstreamHostAndPorts__1__Host=userportalmodule.replica2.webapi
+      - Routes__1__DownstreamHostAndPorts__1__Port=5021
+      - Routes__1__DownstreamHostAndPorts__2__Host=userportalmodule.replica3.webapi
+      - Routes__1__DownstreamHostAndPorts__2__Port=5022
     ports:
       - "5000:80"
       - "7000:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ./conf.d/https/:/https/
+    env_file:
+      - env.files/from.mongodb.env
 
-  managementmodule.webapi:
+  managementmodule.replica1.webapi:
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:80
-      ServiceName: managementmodule.webapi
-      ServicePort: 5010
-      ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      Serilog__WriteTo__0__Args__collectionName: ManagementServiceLogs
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5010
+      - ServiceName=managementmodule.replica1.webapi
+      - ServicePort=5010
+      - SystemOptions__SeedSampleData=true
+      - ConnectionStrings__ManagementModule=host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      - Serilog__WriteTo__0__Args__collectionName=ManagementServiceLogs
+    env_file:
+      - env.files/from.auth.env
+      - env.files/from.consul.env
+      - env.files/from.mongodb.env
+      - env.files/from.rabbitmq.env
+    ports:
+      - "5010:5010"
+
+  managementmodule.replica2.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5011
+      - ServiceName=managementmodule.replica2.webapi
+      - ServicePort=5011
+      - SystemOptions__SeedSampleData=false
+      - ConnectionStrings__ManagementModule=host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      - Serilog__WriteTo__0__Args__collectionName=ManagementServiceLogs
+    env_file:
+      - env.files/from.auth.env
+      - env.files/from.consul.env
+      - env.files/from.mongodb.env
+      - env.files/from.rabbitmq.env
+    ports:
+      - "5011:5011"
+
+  userportalmodule.replica1.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5020
+      - ServiceName=userportalmodule.replica1.webapi
+      - ServicePort=5020
+      - SystemOptions__SeedSampleData=true
+      - ConnectionStrings__UserPortalModule=host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      - Serilog__WriteTo__0__Args__collectionName=UserPortalServiceLogs
     env_file:
       - env.files/from.consul.env
       - env.files/from.mongodb.env
       - env.files/from.rabbitmq.env
     ports:
-      - "5010:80"
+      - "5020:5020"
 
-  userportalmodule.webapi:
+  userportalmodule.replica2.webapi:
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:80
-      ServiceName: userportalmodule.webapi
-      ServicePort: 5020
-      ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      Serilog__WriteTo__0__Args__collectionName: UserPortalServiceLogs
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5021
+      - ServiceName=userportalmodule.replica2.webapi
+      - ServicePort=5021
+      - SystemOptions__SeedSampleData=false
+      - ConnectionStrings__UserPortalModule=host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      - Serilog__WriteTo__0__Args__collectionName=UserPortalServiceLogs
     env_file:
       - env.files/from.consul.env
       - env.files/from.mongodb.env
       - env.files/from.rabbitmq.env
     ports:
-      - "5020:80"
+      - "5021:5021"
+
+  userportalmodule.replica3.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5022
+      - ServiceName=userportalmodule.replica3.webapi
+      - ServicePort=5022
+      - SystemOptions__SeedSampleData=false
+      - ConnectionStrings__UserPortalModule=host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      - Serilog__WriteTo__0__Args__collectionName=UserPortalServiceLogs
+    env_file:
+      - env.files/from.consul.env
+      - env.files/from.mongodb.env
+      - env.files/from.rabbitmq.env
+    ports:
+      - "5022:5022"
 
   managementmodule.eventprocessor:
     environment:
-      ConnectionStrings_ManagementModule: host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      Serilog__WriteTo__0__Args__collectionName: ManagementEventLogs
+      - ConnectionStrings__ManagementModule=host=postgresql-master;Port=5432;Database=ManagementModuleDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      - Serilog__WriteTo__0__Args__collectionName=ManagementEventLogs
     env_file:
       - env.files/from.mongodb.env
       - env.files/from.rabbitmq.env
 
   userportalmodule.eventprocessor:
     environment:
-      ConnectionStrings_UserPortalModule: host=postgresql-master;Port=5432;Database=UserPortalDb;User Id=postgres;Password=postgres;CommandTimeout=300;
-      Serilog__WriteTo__0__Args__collectionName: UserPortalEventLogs
+      - ConnectionStrings__UserPortalModule=host=postgresql-master;Port=5432;Database=UserPortalDb;User Id=postgres;Password=postgres;CommandTimeout=300;
+      - Serilog__WriteTo__0__Args__collectionName=UserPortalEventLogs
     env_file:
       - env.files/from.mongodb.env
       - env.files/from.rabbitmq.env
@@ -104,9 +166,9 @@ services:
 
   pgadmin:
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-postgres}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-postgres}
+      - PGADMIN_CONFIG_SERVER_MODE='False'
     ports:
       - '${PGADMIN_PORT:-5050}:80'
 

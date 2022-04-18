@@ -4,17 +4,23 @@ using Microsoft.Extensions.Configuration;
 
 public static class CommonSettings
 {
+    public static bool? GetSeedSampleDataValue()
+    {
+        var value = Environment.GetEnvironmentVariable("SystemOptions__SeedSampleData");
+        return value.IsNullOrEmpty() ? (bool?)null : bool.Parse(value);
+    }
+
     public static string GetApiGatewayUrl()
     {
         string url = "http://localhost:5000/";
-        var environmentValue = Environment.GetEnvironmentVariable("CommonSettings_ApiGatewayUrl");
+        var environmentValue = Environment.GetEnvironmentVariable("CommonSettings__ApiGatewayUrl");
         return environmentValue.IsNullOrEmpty() ? url : environmentValue;
     }
 
     public static string GetTokenValidationApiUrl(string accessToken)
     {
-        string url = "http://localhost:5002/api/auth";
-        var environmentValue = Environment.GetEnvironmentVariable("CommonSettings_TokenValidationApiUrl");
+        string url = "http://localhost:5020/api/userPortal/auth";
+        var environmentValue = Environment.GetEnvironmentVariable("CommonSettings__TokenValidationApiUrl");
         return (environmentValue.IsNullOrEmpty() ? url : environmentValue) + "/validate?token=" + accessToken;
     }
 

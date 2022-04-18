@@ -17,6 +17,7 @@ public static class ConsulBootstrapper
     public static IApplicationBuilder RegisterWithConsule(this IApplicationBuilder app, ICollection<string> urls)
     {
         var consuleClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
+        var appGuid = app.ApplicationServices.GetRequiredService<IAppGuid>();
 
         var loggingFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
 
@@ -30,7 +31,7 @@ public static class ConsulBootstrapper
         var uri = new Uri(address);
         var registration = new AgentServiceRegistration
         {
-            ID = $"UserPortalService",
+            ID = $"{uri.Host}:{appGuid.AppId}",
             Name = $"UserPortalService",
             Address = $"{uri.Host}",
             Port = uri.Port,
@@ -47,6 +48,7 @@ public static class ConsulBootstrapper
     public static IApplicationBuilder DeregisterWithConsule(this IApplicationBuilder app, ICollection<string> urls)
     {
         var consuleClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
+        var appGuid = app.ApplicationServices.GetRequiredService<IAppGuid>();
 
         var loggingFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
 
@@ -60,7 +62,7 @@ public static class ConsulBootstrapper
         var uri = new Uri(address);
         var registration = new AgentServiceRegistration
         {
-            ID = $"UserPortalService",
+            ID = $"{uri.Host}:{appGuid.AppId}",
             Name = $"UserPortalService",
             Address = $"{uri.Host}",
             Port = uri.Port,

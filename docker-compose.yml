@@ -9,10 +9,15 @@ services:
     depends_on:
       - "mongo"
       - "postgresql-master"
+      - "managementmodule.replica1.webapi"
+      - "managementmodule.replica2.webapi"
+      - "userportalmodule.replica1.webapi"
+      - "userportalmodule.replica2.webapi"
+      - "userportalmodule.replica3.webapi"
     networks:
       - blogsite-network
 
-  managementmodule.webapi:
+  managementmodule.replica1.webapi:
     image: ${DOCKER_REGISTRY-}managementmodulewebapi
     build:
       context: .
@@ -25,7 +30,21 @@ services:
     networks:
       - blogsite-network
 
-  userportalmodule.webapi:
+  managementmodule.replica2.webapi:
+    image: ${DOCKER_REGISTRY-}managementmodulewebapi
+    build:
+      context: .
+      dockerfile: src/ManagementModule/ManagementModule.WebApi/Dockerfile
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+      - "s_consul"
+      - "rabbitmq"
+      - "managementmodule.replica1.webapi"
+    networks:
+      - blogsite-network
+
+  userportalmodule.replica1.webapi:
     image: ${DOCKER_REGISTRY-}userportalmodulewebapi
     build:
       context: .
@@ -35,6 +54,35 @@ services:
       - "postgresql-master"
       - "s_consul"
       - "rabbitmq"
+    networks:
+      - blogsite-network
+
+  userportalmodule.replica2.webapi:
+    image: ${DOCKER_REGISTRY-}userportalmodulewebapi
+    build:
+      context: .
+      dockerfile: src/UserPortalModule/UserPortalModule.WebApi/Dockerfile
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+      - "s_consul"
+      - "rabbitmq"
+      - "userportalmodule.replica1.webapi"
+    networks:
+      - blogsite-network
+
+  userportalmodule.replica3.webapi:
+    image: ${DOCKER_REGISTRY-}userportalmodulewebapi
+    build:
+      context: .
+      dockerfile: src/UserPortalModule/UserPortalModule.WebApi/Dockerfile
+    depends_on:
+      - "mongo"
+      - "postgresql-master"
+      - "s_consul"
+      - "rabbitmq"
+      - "userportalmodule.replica1.webapi"
+      - "userportalmodule.replica2.webapi"
     networks:
       - blogsite-network
 
@@ -73,6 +121,8 @@ services:
     image: docker.io/bitnami/postgresql:14
     volumes:
       - 'vol_app_slave_1_db:/bitnami/postgresql'
+    depends_on:
+      - "postgresql-master"
     networks:
       - blogsite-network
 
@@ -80,6 +130,9 @@ services:
     image: docker.io/bitnami/postgresql:14
     volumes:
       - 'vol_app_slave_2_db:/bitnami/postgresql'
+    depends_on:
+      - "postgresql-master"
+      - "postgresql-slave-1"
     networks:
       - blogsite-network
 
@@ -87,6 +140,10 @@ services:
     image: docker.io/bitnami/postgresql:14
     volumes:
       - 'vol_app_slave_3_db:/bitnami/postgresql'
+    depends_on:
+      - "postgresql-master"
+      - "postgresql-slave-1"
+      - "postgresql-slave-2"
     networks:
       - blogsite-network
 
@@ -94,6 +151,11 @@ services:
     image: docker.io/bitnami/postgresql:14
     volumes:
       - 'vol_app_slave_4_db:/bitnami/postgresql'
+    depends_on:
+      - "postgresql-master"
+      - "postgresql-slave-1"
+      - "postgresql-slave-2"
+      - "postgresql-slave-3"
     networks:
       - blogsite-network
 

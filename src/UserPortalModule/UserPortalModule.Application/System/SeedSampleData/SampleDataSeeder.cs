@@ -17,7 +17,12 @@ namespace UserPortalModule.System.SeedSampleData
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            if (_options != null && _options.SeedSampleData.HasValue && _options.SeedSampleData.Value)
+            var environmentSeedDataValue = CommonSettings.GetSeedSampleDataValue();
+
+            if (
+                (_options != null && _options.SeedSampleData.HasValue && _options.SeedSampleData.Value)
+                || (environmentSeedDataValue.HasValue && environmentSeedDataValue.Value)
+                )
             {
                 /// seed sample datas
                 /// 

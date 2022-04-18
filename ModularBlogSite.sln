@@ -34,6 +34,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B9E45BF-FB0A-4454-90D0-301F374FC428}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		env.files\from.auth.env = env.files\from.auth.env
+		env.files\from.consul.env = env.files\from.consul.env
+		env.files\from.mongodb.env = env.files\from.mongodb.env
+		env.files\from.rabbitmq.env = env.files\from.rabbitmq.env
+		env.files\postgresql-master.env = env.files\postgresql-master.env
+		env.files\postgresql-slave.env = env.files\postgresql-slave.env
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject

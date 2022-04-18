@@ -20,7 +20,7 @@ public class AuthController : Controller
     }
 
     [HttpGet]
-    [Route("api/[controller]/[action]")]
+    [Route("api/userPortal/[controller]/[action]")]
     public async Task<TokenModel> Validate(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();

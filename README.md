@@ -10,6 +10,10 @@ Uygulamadaki asıl amaç mikroservis mimarisi ile bu kurguyu yakalamaya çalış
 
 Uygulamanın ön planında bir apigateway bulunmaktadır. Şimdilik docker üzerinde çalıştıramadım, ilk fırsatta bununla da ilgileneceğim.
 
+**Not:** Artık load balancing çalışır vaziyettedir. Uygulamayı lokalinizde ayağa kaldırdıktan sonra apigateway'i "http://localhost:5000" adresinden denemeleriniz için kullanabilirsiniz. Ek olarak aşağıda iki modül içinde swagger adresleri bulunuyor, oradaki endpoint'leri **"api"** prefix'ini kaldırarak apigateway üzerinden çalıştırabilirsiniz. Örneğin token almak için UserPortal modülünü çağırmaktansa => "http://localhost:5000/userPortal/queries/UserLoginQuery" ve sonrasında ise mevcut kullanıcıların listesine erişmek için => "http://localhost:5000/management/queries/GetUserListQuery" endpoint'lerini kullanabilirsiniz.
+
+**Not:** Ek olarak authentication yapısı aktif olduğundan **"GetUserListQuery"** apisini kullanırken yetki hatası alacaksınız. Bunu kullanabilmek için ilk olarak token alıp, sonra bu token'i header'a **"authorization"** key değerine **"Bearer {aldığınız-token}"** şeklinde kullanım ile erişim sağlayabilirsiniz. Aslında bildiğiniz JWT token authentication.
+
 Arkada iki adet mikroservis bulunuyor. Biri **"Management"**, diğeri **"UserPortal"** olmak üzere.
 
 **"Management"** mikroservisi şu 3 temel apiyi hedef almaktadır;

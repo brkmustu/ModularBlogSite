@@ -12,7 +12,7 @@ public class CurrentUserService : ICurrentUserService
         this.httpContextAccessor = httpContextAccessor;
     }
     private string userId => this.httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-    public Guid? UserId => IsAuthenticated ? new Guid(userId) : (Guid?)null;
+    public int? UserId => IsAuthenticated ? int.Parse(userId) : default(int);
     public bool IsAuthenticated => !userId.IsNullOrEmpty();
     public IIdentity Identity => this.Principal.Identity!;
     public bool IsInRole(string role) => this.Principal.IsInRole(role);

@@ -21,7 +21,7 @@ public static class PermissionExtensions
         return allNewPermissions;
     }
 
-    public static List<Permission> GetUserPermissions(ICoreModuleDbContext dbContext, Guid userId)
+    public static List<Permission> GetUserPermissions(ICoreModuleDbContext dbContext, int userId)
     {
         var user = dbContext.Users.FirstOrDefault(x => x.Id == userId);
 

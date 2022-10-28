@@ -16,7 +16,7 @@ public class SeedingConsts
         admin.SetPasswordHash(encryptedPassword.PasswordHash);
         admin.SetPasswordSalt(encryptedPassword.PasswordSalt);
 
-        admin.Id = Guid.NewGuid();
+        admin.Id = 1;
 
         admin.SetUserStatus(UserStatusType.Active);
         admin.Activate();

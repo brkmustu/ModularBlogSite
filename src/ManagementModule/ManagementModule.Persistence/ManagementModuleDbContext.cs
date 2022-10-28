@@ -44,24 +44,24 @@ public class ManagementModuleDbContext : DbContext, IManagementModuleDbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    if (entry.Entity.CreatedBy == Guid.Empty)
+                    if (entry.Entity.CreationUser == Guid.Empty)
                     {
                         if (_currentUserService is not null)
-                            entry.Entity.CreatedBy = _currentUserService.UserId.HasValue ? _currentUserService.UserId.Value : SystemOptions.SystemGuid;
+                            entry.Entity.CreationUser = _currentUserService.UserId.HasValue ? _currentUserService.UserId.Value : SystemOptions.SystemGuid;
                         else
-                            entry.Entity.CreatedBy = SystemOptions.SystemGuid;
+                            entry.Entity.CreationUser = SystemOptions.SystemGuid;
                     }
-                    entry.Entity.CreatedDate = _dateTime.Now;
+                    entry.Entity.CreationDate = _dateTime.Now;
                     break;
                 case EntityState.Modified:
-                    if (!entry.Entity.LastModifiedBy.HasValue || entry.Entity.LastModifiedBy.Value == Guid.Empty)
+                    if (!entry.Entity.ModifiedUser.HasValue || entry.Entity.ModifiedUser.Value == Guid.Empty)
                     {
                         if (_currentUserService is not null && _currentUserService.UserId.HasValue)
-                            entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                            entry.Entity.ModifiedUser = _currentUserService.UserId;
                         else
-                            entry.Entity.LastModifiedBy = SystemOptions.SystemGuid;
+                            entry.Entity.ModifiedUser = SystemOptions.SystemGuid;
                     }
-                    entry.Entity.LastModifiedDate = _dateTime.Now;
+                    entry.Entity.ModifiedDate = _dateTime.Now;
                     break;
             }
         }

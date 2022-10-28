@@ -2,5 +2,5 @@
 
 public class UserApprovedEvent
 {
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
 }

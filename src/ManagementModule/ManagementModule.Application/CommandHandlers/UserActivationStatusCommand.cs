@@ -15,7 +15,7 @@ namespace ManagementModule.CommandHandlers;
 public class UserActivationStatusCommand : CommandRequest
 {
     [Required]
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
     public bool IsActive { get; set; }
 
     [JsonIgnore]

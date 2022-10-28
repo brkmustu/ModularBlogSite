@@ -16,7 +16,7 @@ namespace UserPortalModule.Consumers
 
         public async Task Consume(ConsumeContext<UserApprovedEvent> context)
         {
-            if (context.Message.UserId == Guid.Empty)
+            if (context.Message.UserId == default(int))
                 return;
             
             var approvedUser = dbContext.Users.FirstOrDefault(user => user.Id == context.Message.UserId);

@@ -18,7 +18,7 @@ namespace ManagementModule.CommandHandlers;
 public class UserChangeStatusCommand : CommandRequest
 {
     [Required]
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
     [Required]
     public bool IsApproved { get; set; }
 

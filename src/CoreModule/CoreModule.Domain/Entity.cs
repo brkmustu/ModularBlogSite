@@ -1,6 +1,6 @@
 ﻿namespace CoreModule.Domain;
 
-public interface IEntity : IEntity<Guid>
+public interface IEntity : IEntity<int>
 {
 }
 public interface IEntity<TPrimaryKey>
@@ -12,7 +12,7 @@ public class Entity<TPrimaryKey> : ActivetableEntity, IEntity<TPrimaryKey>
     public TPrimaryKey Id { get; set; }
 
 }
-public class Entity : Entity<Guid>
+public class Entity : Entity<int>
 {
 }
 

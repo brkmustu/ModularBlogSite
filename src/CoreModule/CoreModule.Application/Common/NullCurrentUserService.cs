@@ -5,7 +5,7 @@ namespace CoreModule.Application.Common;
 
 public class NullCurrentUserService : ICurrentUserService
 {
-    public Guid? UserId => (Guid?)null;
+    public int? UserId => default(int);
 
     public bool IsAuthenticated => false;
 

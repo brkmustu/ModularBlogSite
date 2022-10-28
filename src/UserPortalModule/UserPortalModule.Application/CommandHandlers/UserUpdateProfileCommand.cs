@@ -13,7 +13,7 @@ namespace UserPortalModule.CommandHandlers;
 public class UserUpdateProfileCommand : CommandRequest
 {
     [Required]
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
 
     [Required(AllowEmptyStrings = false)]
     [StringLength(70)]
@@ -55,10 +55,10 @@ public class UserUpdateProfileCommand : CommandRequest
             var user = _mapper.Map<User>(command);
             user.Id = command.UserId;
             
-            user.CreatedBy = currentUser.CreatedBy;
-            user.CreatedDate = currentUser.CreatedDate;
-            user.LastModifiedBy = currentUser.LastModifiedBy;
-            user.LastModifiedDate = currentUser.LastModifiedDate;
+            user.CreationUser = currentUser.CreationUser;
+            user.CreationDate = currentUser.CreationDate;
+            user.ModifiedUser = currentUser.ModifiedUser;
+            user.ModifiedDate = currentUser.ModifiedDate;
             
             if (currentUser.IsActive)
                 user.Activate();

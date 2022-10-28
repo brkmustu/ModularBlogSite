@@ -44,18 +44,18 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.UserStatusId)
             .HasDefaultValue(((int)UserStatusType.WaitingForApproval));
 
-        builder.Property(x => x.CreatedBy)
+        builder.Property(x => x.CreationUser)
             .IsRequired();
 
-        builder.Property(x => x.CreatedDate)
+        builder.Property(x => x.CreationDate)
             .IsRequired()
             .HasColumnType("date");
 
-        builder.Property(x => x.LastModifiedDate)
+        builder.Property(x => x.ModifiedDate)
             .IsRequired(false)
             .HasColumnType("date");
 
-        builder.Property(x => x.LastModifiedBy)
+        builder.Property(x => x.ModifiedUser)
             .IsRequired(false);
 
         builder.Property(x => x.RoleIds)

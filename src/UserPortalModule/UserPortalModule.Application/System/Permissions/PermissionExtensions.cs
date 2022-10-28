@@ -20,7 +20,7 @@ public static class PermissionExtensions
         return CorePermissionExtensions.GetAuthSystemPermissions(ApplicationLayerAssemblies, ModuleConsts.ModuleName);
     }
 
-    public static List<Permission> GetUserPermissions(IUserPortalModuleDbContext dbContext, Guid userId)
+    public static List<Permission> GetUserPermissions(IUserPortalModuleDbContext dbContext, int userId)
     {
         return CorePermissionExtensions.GetUserPermissions(dbContext, userId);
     }

@@ -4,7 +4,7 @@ namespace CoreModule.Application.Common.Interfaces
 {
     public interface ICurrentUserService
     {
-        Guid? UserId { get; }
+        int? UserId { get; }
         bool IsAuthenticated { get; }
         IIdentity Identity { get; }
         bool IsInRole(string role);
